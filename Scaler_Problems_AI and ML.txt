@@ -1,0 +1,136 @@
+Write a program to input three numbers(A, B & C) from user and print the maximum element among A, B & C in each line.
+
+Problem Constraints
+1 <= A <= 1000000
+
+1 <= B <= 1000000
+
+1 <= C <= 1000000
+
+
+
+Input Format
+First line is a single integer A.
+Second line is a single integer B.
+Third line is a single integer C.
+
+
+
+Output Format
+One line containing an integer as per the question.
+
+
+
+Example Input
+Input 1:
+
+5 
+6 
+7
+Input 2:
+
+1000 
+10000 
+100000
+
+
+Example Output
+Output 1:
+
+7
+Output 2:
+
+100000
+
+
+Example Explanation
+Explanation 1:
+
+Clearly, among 5, 6 and 7, 7 is maximum.
+Explanation 2:
+
+Clearly, among 1000, 10000 and 100000, 100000 is maximum.
+
+Sol:
+
+def main():
+    # YOUR CODE GOES HERE
+    # Please take input and print output to standard input/output (stdin/stdout)
+    # E.g. 'input()/raw_input()' for input & 'print' for output
+    a, b, c=(input().split())
+    if(int(a)>=int(b) and int(a)>=int(c)):
+        print(a)
+    elif(int(b)>=int(c)):
+        print(b)
+    else:
+        print(c)
+    return 0
+if __name__ == '__main__':
+    main()
+	
+	
+----------------------------------------------------
+
+Take an integer A as input. You have to tell whether A is divible by both 5 and 11 or not.
+
+
+Problem Constraints
+
+1 <= A <= 109
+
+
+
+Input Format
+
+The input contains a single integer A.
+
+
+
+Output Format
+
+Print 1 if A is divisible by both 5 and 11, else print 0.
+
+
+
+Example Input
+
+Input 1:
+
+ 55 
+Input 2:
+
+ 22 
+
+
+Example Output
+
+Output 1:
+
+ 1 
+Output 2:
+
+ 0 
+
+
+Example Explanation
+
+Explanation 1:
+
+ 55 is divisible by both 5 (5 * 11 = 55) and 11 (11 * 5 = 55).
+Explanation 2:
+
+ 22 is divisble by 11 (11 * 2 = 22),but it is not divisible by 5.
+ 
+ 
+ def main():
+    # YOUR CODE GOES HERE
+    # Please take input and print output to standard input/output (stdin/stdout)
+    # E.g. 'input()/raw_input()' for input & 'print' for output
+    #print("please enter the number A")
+    A=int(input())
+    if(A%5==0 and A%11==0):
+        print(1)
+    else:
+        print(0)
+if __name__ == '__main__':
+    main()

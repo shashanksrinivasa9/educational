@@ -1,0 +1,505 @@
+free
+top
+uptime -->
+df --->disk free
+du --> disk usage
+uname
+cat /etc/osrelease
+curl
+wget ---> file downloader ,non-interactive(meaning can work when the user is offline )
+mv source_file destination file <command to rename a file.>
+adduser <username> creates a new user in the linux file system.
+chown <options> like -R user:group <file name ,absoulte path is needed if we are in a different location> ,this is used to change the owner and group of a file
+rm -rf is the command to remove a file from linux file system.
+ln -s <file1> <file2> --> this is the command to create soft link of file1 as file 2. whenever file2 is executed internally file 1 also executed.
+su <username> is used to switch the user in the terminal
+netstat -plnt is the command to check if a service is up and running or not.
+ps -ef <command to check what processes are running>
+
+
+question:
+
+connect from your linux instance to docker instance .(docker instance doesnt have key)
+
+solution :
+
+open your linux machine 
+
+open your docker machine
+
+in your linux machine, create keys (public and prviate) using key gen command
+
+from the linux machine, copy the public key in the registered key folder of docker machine.  we need to append to the already exisitng key.
+
+then connect to the docker machine from the linux machine using that key
+
+
+minute (0-59),hour(0-23),day of the month(1-31),month (1-12),day of the week(0-7, both 0 and 7 representing sunday)
+
+crontab guru
+
+crontab -e/l
+
+read command used to give parameters through command prompt
+
+$* --> takes input in a string separated by a space by default
+$# ---> prints the number of inputs given via command line
+$? ---> checks the status of the previous command 0 for pass 1 for fail
+$0 -->this represents the name of the script.
+$1 and $2 are magic variables that will be assigned to the first and second argument passed to the script
+-z <returns true if the length of the command prompt variable is o>
+
+&& and operator
+|| or operator
+
+if[conditon]; then
+ statement
+ else
+ statement
+fi
+
+while checking conditions use == for comparing string values.
+
+syntax to print date with time is as below
+
+here it is printing date, month, year,minutes and hours in the order from left tom right
+date + %m_%d_%y_%H_%M_%S 
+
+version controller
+
+2 types of version controllinjg mechanisms are present
+
+centralized version control and distriubuted version control
+in centralized version control, developers work on a central server directly where as in a distributed version control system
+
+each developer will have a local copy of the central server. In centralized version control systems we will need internet and there is a
+
+chance of single point of failure. whereas in a distributed version control system once we have the repo copy locally we can make changes within
+our local machine and parallel development is possible even with out internet (only in cases of push,pull and clone we will need internet)
+
+git concepts:
+create folder
+make changes
+git init
+git status
+git add.
+
+git commit -m "message"
+
+push your changes to repo (remote repo)
+
+git push origin ma ster
+
+create git hib account
+create repo with same folder name
+
+git hub token :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
+
+git remote add <url> to manage the repo from terminal
+
+
+git clone < url> ssh or httos to copy the projecty to local machine
+
+git fork command to copy entire repo from another user to our repo
+
+GIT branching
+
+feature branch to staging then staging to pre production and then pre production to master branch
+
+git branch --> command to see which branch we are standing (with * and green)
+git branch -a shows all the branches in our account.
+
+git branch <branch name> command to create new branch
+
+git checkout <branchname> to jump to another branch
+
+to bring changes from one branch to other go to that branch and raise a pull request. Once a pull request is raised , we can then confirm merge request.
+
+once merge request is confirmed we will get the changes from the newly create merge to the master branch.
+
+git checkout -b <branch_name> will create a new branch and will move the prompt to that branch together.
+
+git branch -d  <branch name > deletes the branch from local machine
+
+git push origin -d <branch name > will delete the branch from the remote account also.
+
+git fetch --> will bring in the new branch from remote repo to local with out actually bringing in the changes
+
+difference between git fetch and git pull is git pull will bring the branch and file changes,,while fetch will only map the new branch but not the changes
+
+git tag -l <give the list of all tags>
+
+git tag <tag_name> creates a new tag
+
+git tag -a <tag name> -m "message" creates anointed tag which is a special tag
+git push origin <tag_name> will push the tag to the git hub
+
+the above will create tag on the latest commit. to create a tag on the previous releases,
+
+we will do later tagging
+
+to do it we use below command
+git tag <tag_nam> <commit_id first 6 digits>
+
+git tag -d <tag name > will remove tag from local machine
+git push origin :ref/tag/tag_name will remove tag from the remote repo also.
+
+git checkout <filename> will undo the changes
+
+to undo previous changes we need to use following commands
+
+git checkout
+git revert
+git reset
+
+the areas of GIT are working |(local repo) ---> staging/indexing (after adding )  --->commit (after commiting) ---> git push (after pushing the file to github)
+
+to move files from working area to staging area we use git add . further to move files from staging to commit area we use git commit 
+
+to move files from commit area to git hub we push the code using git push <origin> <master >
+
+git checkout <file name> will revert the changes at the working stage.
+
+git checkout <file name1> <filename2> <filename3> will undo changes of multiple files.
+
+git diff --> will give changes between commit area file and local file  <the changes added will be displayed in green and then changes removed will be shown in red>
+
+to undo changes from commit area back to working directory we use git reset command
+
+git reset is of 3 types 
+
+git reset --soft Head~1 ---> this remove the commitn message and bring the file back to staging area from commit .so all we need is to commit the change again.file changes
+will still be present inside it.
+
+git reset -- mixed Head~1 --mixed can be skipped and git reset by defualt is --mixed .here the file changes are brought from commit area to working directory
+changes will be present in the working directory but we will have to add them and then commit if we want any action on them
+
+git reset --hard Head~1  --> will remove the file from working directory also.
+
+git revert <commitsha> first 6 olr 7 letters of commit id will revert the changes from the git hub all the way upto working directory meaning it willm
+
+completely remove all the changes. jt will also commit a small change indicating the revert operation.
+
+git commit --amend -m "message name " will change the commit message from a previous commit ---> will only wqork for the latest message
+
+git rebase -i HEAD~<message number > ..will amend commit messages of  the commit number from the head.
+
+git log--oneline -->will give commit message and then id in a single line
+
+git rebase -i HEAD<5> and then select "S" option for sqaushing..squashing will meld different commits together.
+
+
+while we raise the pull request we get 3 options git merge ,git squash and merge, git rebase and merge in ui
+
+to see in details
+
+suppose in master branch there are 3 commits , then a new implementation came in a new branch called "feature " and it has 2 commits.
+
+
+then later on in the master branch if a new hot fix , we need to understand what is the result of it if we use the above 3 commands.
+
+to merge changes between 2 branches within UI, we go to the branch from where we need to merge the changes  and do a pull request. then give base branch 
+
+and destination branch.base and compare in case of github
+
+the problem with git squash and merge is we lose the development history and commit data as it willo merge all the commits into a single message . 
+
+with git merge , even then we get the commit history and development history,the  data will not be linear and feature branch data and master branch data
+
+get jumbled up. so the problem is not completely solved even with this approach
+
+with git rebase command, a clear development history and commit history is obtained. so, it is always the best to use this option if development history
+has to be kept intact
+
+git cherry-pick <commitsha> will bring a specific commit from one branch to other.
+
+git stash command stores our working copy temporarily for us to switch branches and then start from the reference poiint again
+
+git stash apply --is to save the working copy
+git stash pop -- is to remnove then stashing we need to use stash id in this command.
+
+git stash will only work on the existing files but not new files.
+
+Branching strategy in GIT:
+
+release  --> staging  -->preproduction -->production  
+
+.gitignore file in git environment will add files that have to be avoided for committing
+
+
+Jenkins:
+
+To install jenkins we need Java jdk 11 first then we have to install jenkins
+we can then start jenkins by jenkis service star
+
+jenkins is supported only by jenkins 11
+
+to see java version type java -version.please make sure only java 11 is supported.
+
+In windows, afterinstalling Java 11 edit the environment variables
+
+add envirnoment variable name as: JAVA_HOME and give value as its path .change this in user setting of environment variable.
+
+we will also have to edit the PATH variable by typing %JAVA_HOME%\bin PATH  is a separate environment variable.
+
+to run jenkins in windows we need to type java - jar jenkins.war from the command prompt. It has to be openend from where the jenkins war file
+
+is installed. by default jetty is the server that runs inside jenkins
+
+To start jenkins in browser we use port localhost:8080 .password for jenkins is stored inside a sceret folder in the jenkins the installation
+
+folder path.  
+
+to install jenkins in AMI linux machine :
+sudo yum install jenkins -y
+
+to check whether jenkins is runninjg or not in an AMI linux machine we use the command
+
+some basic jobs in jenkins that we see are:
+
+print hello message
+
+ppull code from github and work with it --integraten github with jenkins
+
+create sample java project and work on it.
+
+to create a job in jenkins, we first start its service using command jenkins service start.
+
+we open the jenkins server on the port 8080. For this to open we will have to edit our esecuity group policies to enable tcp traffic on 8080 port.
+
+we o go to the browser and type our ec2 instance id and jenkins port number 8080 separated with colon,
+
+the first job we create is a basic hello world job. In this job, we click on create new button and then update our job name .
+
+We also give the command to be run for our job at the bottom section. here we can give echo "hello world" oneimpiortant option to select
+
+is runtime env which we need to select as bash shell. so this can be considered as a very basic job.
+
+second job is to integrate a git repository with jenkins and run it on jenkins. to do this, we should create a new job and then configure our setting\
+
+by adding our git repo connection link(used for cloning the git repos give the https link instead of the ssh one).  we also need to give our git hub credential to pull the git changes.
+
+then we have to make sure we install git in our ec2 instance (if not present we need\
+
+to install it by using command sudo yum git install -y. Along with congifuiring our git repo within the job page, we also need to change it in
+
+the main jenkins page by editing manage jenkins page . here it expects the executable path of GIT and if GIT is already installed in our ec2 instance
+
+it automatically pops up there. so it is essential that git is confiugured in these 2 locations mandatorily. p
+
+In Jenkins there is option for us to manage the build trigger automatically. these are of 3 types
+
+they are :
+
+poll scm  ---> here job will be triggered at a specific time if a change is pushed
+
+build periodically ---> job will be triggered in a period after a specific time even without changes by picking latest change
+
+and 
+
+webhook --> job will be triggered immediately if code changes are made .here there is no waiting period as in the case of poll scm.
+
+all the above 3 jobs are cron jobs. poll scm and build periodically are pull based mechanism and webhook is a push based mechanism.
+
+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 --->github token
+
+to create poll scm in configure page of a jenkins job, in the build triggers section select poll scm and provie the necessary cron job schedule
+
+if the job is for periodical do the same but select build periodically
+
+however to select a webhook there is no need to create a cron job .instead select webhook option in the jenkins job page build trigger section
+in the git page of the project select webhook option and copy and paste the jenkins url link followed by /github-webhook.this we will get inside
+the specific repo setting but not the overall repo.
+
+Maven:
+
+Every project in Maven has a pom.xml file. (project object module) generally, a maven project may have src,test and pom.xml file.
+
+pom.xml file has syntax . 
+
+it primarily has tags like
+
+dependencies, groupid, artifactid( jar file name), scope (when the jar file is used build or test). we can add multiple dependencies.
+
+example is below:
+
+<!-- https://mvnrepository.com/artifact/org.apache.maven/maven-core -->
+<dependency>
+    <groupId>org.apache.maven</groupId>
+    <artifactId>maven-core</artifactId>
+    <version>4.0.0-alpha-5</version>
+</dependency>
+
+please note that maven architecture contains different repositories , local,remote and central.
+
+.m2 folder in maven architecture is our local repo. any dependency files that are needed for our file will be downloaded from remote repo and copied
+
+into our local repo. If the dependency is not even available in remote repo, it will be kept in cental repo (which is internet).
+
+the remote repositories example are jfrog,nexus,maven in our own linux server and it can be used by entire company staff to download the repo
+
+but if the artifacts are public they are then downloaded from central repo (internet ).  only custom dependencies or jar files can be kept in our 
+
+remote repo.
+
+in pom.xml file, the code we write will help our project download the data from the internet. from next time onwards it will directly use the data
+from remote or local repo
+
+Maven project has following lifecycle:
+
+validate --->validates project structure 
+compile -->  syntax check 
+test ---> executes test classes. 
+package ---> final output jars --> they are deployed on to web servers like (apache tom cat )
+verify
+install
+deploy
+
+how will we know our package gives .jar or .war
+
+so in pom.xml file a tag called packaging is present, which givesn info about file is .war or .jar
+
+but by default it is .jar 
+
+we use the lifecycle untill package. so we use mvn <lifecycle COmmand> for the maven project to work for ex maven package
+
+in maven package , validate, compile test and package together .. so if we give maven deploy all the steps will get executed
+
+clean is a default lifecycle. every package step will create a target folder which will have test report folder (final output .war file). when we do target again,
+
+it will remove the previous target folder and create new target folder (default program --> meaning clean). 
+
+use srping3 maven github example (https://github.com/mkyong/spring3-mvc-maven-xml-hello-world) please note all the tags in this link.please understand
+that all the dependncies,plugins etc will be added by the developer.
+
+we alson have settings.xml in our maven project, in this we will have info of remote repository like server details ex: id,pwd private key,file permission usage of proxies etc.
+
+to create maven project we use the command : mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+
+in the above command archetype:generate group id will create maven project and it will name the project according to the artifactid name which is my-app.
+
+Maven -Jenkins , Apache tomcat-Jenkins integration.
+
+Maven -jenkins:
+
+After creating a maven project using above command, we can push the pom.xml to github. we should then create a free style job in jenkins prefarbly with the same name
+
+as in maven project. Later we should integrate our maven project with the jenkins tool. For this purpose, we have to go to the configure page within the job of our
+jenkins page and add our maven github url .we can use the credentials of our github .  Along with this, the most important aspect is also to present the maven
+build pipeline stage , example : pasckage: in the build steps which help the jenkins understand the step in maven life cycle until which the 
+process will be executed. Please note that a .jar file or .war file will be only be created if we give the package command in the build steps section.
+
+Any command representing the lifecycle before package will only execute the operation until that point only.
+
+A successful package step is the only option for us to see a .jar or .war file inside the target folder and in test report folder. jenkins job results are stored in 
+/var/lib/jenkins folder.
+
+Now, a jar file can be executed using the command java -jar <jarfilename>.jar.
+
+But how to create a .war file and deploy it in the server. For this purpose, we will need to understand .war file creation from pom.xml file and know about
+apache tom cat server also. 
+
+It is to be noted that the crration of. war or.jar is dependent on packaging tag inside the pom.xml file. So, we can mention .war if we need .war files.(web archive files).
+
+For this purpose, we can fork a java spring boot code from an example github like : https://github.com/mkyong/spring3-mvc-maven-xml-hello-world.
+
+After this we should create a free style job named javaspring anc can integrate our spring boot github with it by giving its url and credentials.
+
+we should again give the option as "package" in the build setting section. So far, we haven't reached the point of deploying our application on to server.
+
+So, for this we use apache tom catn as decribed above. Apache tom cat can be installed in 2 ways .First can be downloaded directly from the apache software
+
+website and second is through command like sudo yum install apache tomcat -y. Whatever possible manner is used the resultant directory contains three important
+folders that have to be understood definitely by all. They are 
+
+bin --> it contains tomcat start and stop scripts . tomcat just like jenkins is a special service and has to be started using command 
+
+sudo service tomcat start , stop , sttatus.
+
+
+conf ---> folder which contains important .xml files like tomcat-users.xml and server.xml which are responsible for username and password details
+
+and changing the port number of the tomcat service. For username and password details ,they are set by default as admin and adminadmin.however, when we start
+the tomcat service and give these credentials, it doesnt work. Reason being in the tomcat-users.xml file they are commented. We have to remove the comments 
+
+
+we should then open the file server.xml and change the server port to 8081 or 82 any port of our choice. This is to make sure the same port is not in 
+
+conflict with the already existing service (mostly like jenkins). After we do these steps we have to restart the tomcat server before using it.
+
+Please note that these files are present in the locations mentioned above when we install the tomcat from the website by downloading the zip file.
+
+instead if we install them directly from the command prompt using the sudo yum install command, then they are (atleast server.xml and tomcat-users.xml)
+
+inside the folder /etc/tomcat .After these settings are done, we load the tomcat page using the public ip address and the port number. Just in the case
+
+of any other service even with this we have to edit inbound rules in the AWS security group page by adding 8081 port.
+
+Please note that as in the case of maven and git, we will need a special plugin to integrate tomcat with our jenkins too. It is called as
+
+"Deploy to container " it has to be specially downloaded from available plugins.the input to the plugin is the location of the .war file in the 
+
+Maven project. usually present in target folder. so we need to give itn as **/target/*.war
+
+General  diagram of the flow so far along with the details.
+
+Git(for changin files) -->github (online repo to see our files ) ---> jenkins (for integration purpose){maven(for compilation and artifact creation like 
+.war/.jar),apache tomcat (for .war file deploying).
+
+Contiuning with above process, after creating the apache tomcat on an isntance along with Jenkins, try and setup tomcat server on a separate instance.
+
+we can take 2 git hub projects for practice 1) petclinic 2) game of life. the idea is simple. to fork the code in those repos to your github.
+
+integrate github,maven with the jenkins instance of our ec2 instance and build a .war file after which it has to be deployed using tomcat.
+
+some examples where the application may not get deployed in older ways where the process follows like  this  
+
+github --> jenkins  (git hub, maven, tomcat integration), are 1) both tomcat and jenkins seerver running on the same instance so we need to run them separately
+
+2) increasing the heap memory of jenkins instance in the file /var/lib/jenkins (sys/config and jenkins file ) .in this file we need to update the command as below.
+
+JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Xmx1024m -XX:MaxPermSize=512m
+
+if the above 2 wont work then we can also go for changing the type of ami instance from t2.micro 2gb t2.micro 8gb (please note that this is chargeable).
+
+-----
+Sonatype nexus and Jfrog:
+
+There are repositories in market that help us to keep a copy of of our .war/.jar files which can be reused as and when required ( we can also docker files,helm chartsetc).
+
+both Sonatype and Nexus have 2 flavours ---> oss and pro  OSS is free and Pro is chargeable.
+
+Nexus can also be implemented in 2 types free style pipeline Also for nexus we will need medium instance  (t2.medium). please create instance on ubuntu.
+
+So, the basic job of nexus is to take back up of artifacts and store it in its repository.
+
+To install nexus follow the material . After nexus installation is done and user and group are added according to the document,
+
+we need to add nexus service as part of the linux bootup. we need to add a softlink for nexus folder that we created to the init.d of etc folder.
+
+in the nexus folder, we change the file called nexus.rc which is inside the bin folder and we add user there. Please note that the default
+port in which our nexus service runs is 8081.So,we have to edit our instance's security group to enable this service.
+
+once the port is up and running we can open nexus repo in our server and create a sampple repo for our purpose.After that, to copy the artifacts
+we integrate the same through jenkins.
+
+For this purpose, we need to install plugin for nexus to integrate with jenkins. which in "nexus platform". After this is done we need to check for
+nexus repository manager publisher option in build steps . please note that maven goal and nexus publisher are present in build steps where as deploy to container
+
+for tomcat is present in post build steps. so we select nexus publisher manager option here. Also, we have to add credentials for nexus in the manage
+
+jenkins section of the main dashboard also. We should give nexus url, add username and password and apply.
+
+After adding the credentials in the main jenkins dashboard, we should come back to configuring our job where we added the fields for build options
+please tc  that the .war file that we will give should have full path.Also, the build version number can be kept generic as  ${BUILD_NUMBER}.
+
+Alos, this is helpful to automatically trigger build once there is an update on the version number . 
+
+Please note a basic difference between free style and pipeline jobs is configuring the fields of the tags from pom.xml file has to be done manually everytime
+
+there is a change in the pom.xml in free style jobs.where as pipeline jobs can handle multiple complexities on its own.
+
+After triggering the build and once that is successful , our projects artifacts get uploaded on to the nexus repository.
+
+
+
