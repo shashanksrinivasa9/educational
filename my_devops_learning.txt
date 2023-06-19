@@ -1,11 +1,21 @@
-free
-top
-uptime -->
-df --->disk free
-du --> disk usage
-uname
+Some Basic Linux commands:
+
+free --> The free command gives information about used and unused memory usage and swap memory of a system
+top ---> The “top” command provides a dynamic real-time view of a running system.
+uptime -->  Tell how long the Linux system has been running. w command – Show who is logged on and what they are doing including the uptime of a Linux box.
+df --->disk free --> The df command stands for "disk-free," and shows available and used disk space on the Linux system. df -T shows the disk usage along with each block's filesystem type (e.g., xfs, ext2, ext3, btrfs, etc.)
+du --> disk usage ---> The du (disk usage) command measures the disk space occupied by files or directories. By default, it measures the current directory and all its subdirectories, printing totals in blocks for each, with a grand total at the bottom.
+uname ---> The uname is a command line tool most commonly used to determine the processor architecture, the system hostname and the version of the kernel running on the system.
 cat /etc/osrelease
-curl
+curl curl is a command-line tool to transfer data to or from a server, using any of the supported protocols (HTTP, FTP, IMAP, POP3, SCP, SFTP, SMTP, TFTP, TELNET, LDAP, or FILE). curl is powered by Libcurl. This tool is preferred for automation since it is designed to work without user interaction. curl can transfer multiple files at once. 
+Syntax:  
+
+curl [options] [URL...]
+URL: The most basic use of curl is typing the command followed by the URL.  
+
+curl https://www.geeksforgeeks.org
+This should display the content of the URL on the terminal. The URL syntax is protocol dependent and multiple URLs can be written as sets like: 
+
 wget ---> file downloader ,non-interactive(meaning can work when the user is offline )
 mv source_file destination file <command to rename a file.>
 adduser <username> creates a new user in the linux file system.
@@ -33,14 +43,19 @@ from the linux machine, copy the public key in the registered key folder of dock
 
 then connect to the docker machine from the linux machine using that key
 
+Cron jobs are used to run jobs at a specified scheduled time
+
+the syntax is as follows : * * * * * (5 stars) representing minute,hour,day,month,day of the week
 
 minute (0-59),hour(0-23),day of the month(1-31),month (1-12),day of the week(0-7, both 0 and 7 representing sunday)
 
-crontab guru
+crontab guru --is the online tool to check cronjob syntax
 
-crontab -e/l
+crontab -e/l  -- is the command to check and edit our own cronjob
 
-read command used to give parameters through command prompt
+Shell Scripting Basics :
+
+read command  is used to give parameters through command prompt
 
 $* --> takes input in a string separated by a space by default
 $# ---> prints the number of inputs given via command line
@@ -62,10 +77,10 @@ while checking conditions use == for comparing string values.
 
 syntax to print date with time is as below
 
-here it is printing date, month, year,minutes and hours in the order from left tom right
+here it is printing date, month, year,minutes and hours in the order from left to right
 date + %m_%d_%y_%H_%M_%S 
 
-version controller
+version controller:
 
 2 types of version controllinjg mechanisms are present
 
@@ -78,8 +93,10 @@ chance of single point of failure. whereas in a distributed version control syst
 our local machine and parallel development is possible even with out internet (only in cases of push,pull and clone we will need internet)
 
 git concepts:
+
 create folder
-make changes
+
+make changes in any file(example text file)
 git init
 git status
 git add.
@@ -88,17 +105,17 @@ git commit -m "message"
 
 push your changes to repo (remote repo)
 
-git push origin ma ster
+git push origin master
 
 create git hib account
 create repo with same folder name
 
-git hub token :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
+git hub token :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 to push into a new repo
 
 git remote add <url> to manage the repo from terminal
 
 
-git clone < url> ssh or httos to copy the projecty to local machine
+git clone < url> ssh or https to copy the projecty to local machine
 
 git fork command to copy entire repo from another user to our repo
 
@@ -176,11 +193,11 @@ changes will be present in the working directory but we will have to add them an
 
 git reset --hard Head~1  --> will remove the file from working directory also.
 
-git revert <commitsha> first 6 olr 7 letters of commit id will revert the changes from the git hub all the way upto working directory meaning it willm
+git revert <commitsha> first 6 olr 7 letters of commit id will revert the changes from the git hub all the way upto working directory meaning it will
 
 completely remove all the changes. jt will also commit a small change indicating the revert operation.
 
-git commit --amend -m "message name " will change the commit message from a previous commit ---> will only wqork for the latest message
+git commit --amend -m "message name " will change the commit message from a previous commit ---> will only work for the latest message
 
 git rebase -i HEAD~<message number > ..will amend commit messages of  the commit number from the head.
 
@@ -230,7 +247,7 @@ release  --> staging  -->preproduction -->production
 Jenkins:
 
 To install jenkins we need Java jdk 11 first then we have to install jenkins
-we can then start jenkins by jenkis service star
+we can then start jenkins by jenkis service start
 
 jenkins is supported only by jenkins 11
 
@@ -253,21 +270,21 @@ folder path.
 to install jenkins in AMI linux machine :
 sudo yum install jenkins -y
 
-to check whether jenkins is runninjg or not in an AMI linux machine we use the command
+to check whether jenkins is running or not in an AMI linux machine we use the command
 
 some basic jobs in jenkins that we see are:
 
 print hello message
 
-ppull code from github and work with it --integraten github with jenkins
+pull code from github and work with it --integraten github with jenkins
 
 create sample java project and work on it.
 
 to create a job in jenkins, we first start its service using command jenkins service start.
 
-we open the jenkins server on the port 8080. For this to open we will have to edit our esecuity group policies to enable tcp traffic on 8080 port.
+we open the jenkins server on the port 8080. For this to open we will have to edit our security group policies to enable tcp traffic on 8080 port.
 
-we o go to the browser and type our ec2 instance id and jenkins port number 8080 separated with colon,
+we    go to the browser and type our ec2 instance id and jenkins port number 8080 separated with colon,
 
 the first job we create is a basic hello world job. In this job, we click on create new button and then update our job name .
 
@@ -346,7 +363,7 @@ in pom.xml file, the code we write will help our project download the data from 
 from remote or local repo
 
 Maven project has following lifecycle:
-
+clean
 validate --->validates project structure 
 compile -->  syntax check 
 test ---> executes test classes. 
@@ -399,7 +416,7 @@ Now, a jar file can be executed using the command java -jar <jarfilename>.jar.
 But how to create a .war file and deploy it in the server. For this purpose, we will need to understand .war file creation from pom.xml file and know about
 apache tom cat server also. 
 
-It is to be noted that the crration of. war or.jar is dependent on packaging tag inside the pom.xml file. So, we can mention .war if we need .war files.(web archive files).
+It is to be noted that the creation of. war or.jar is dependent on packaging tag inside the pom.xml file. So, we can mention .war if we need .war files.(web archive files).
 
 For this purpose, we can fork a java spring boot code from an example github like : https://github.com/mkyong/spring3-mvc-maven-xml-hello-world.
 
@@ -500,6 +517,365 @@ Please note a basic difference between free style and pipeline jobs is configuri
 there is a change in the pom.xml in free style jobs.where as pipeline jobs can handle multiple complexities on its own.
 
 After triggering the build and once that is successful , our projects artifacts get uploaded on to the nexus repository.
+
+
+
+Sonarqube:
+
+<Space left for sonarqube>
+
+
+
+
+
+
+
+-------------------
+
+Downstream and Updstream Jobs : By adding the option Build after other projects are built in Build triggers section of a job and specifying the Job name
+
+we can add the upstream job Similarly  In post build actions , we can add the job name in Build other projects to trigger a downstream job.
+
+Junit test report:
+
+We can see the results of the job in a GUI way on the main page of the Jenkins page by setting up Run JUNIT tests in post build actions.
+
+Here we need to give the input as .xml file present in the surefire folder of the workspace directory.
+------
+
+Dashboard UI: In case of seeing details related to multiple jobs at one place, we make use of a plugin called Dashboard. This will help us see the 
+
+details of various jobs in a much better graphic presentable format. This is present after we click + symbol just beside main page .We should then
+add the details accordingly.
+
+------------
+
+Msster-Slave architecture:
+There is always dangerof loading the main Jenkins server by running all jobs in it. Instead of that we can make use of slave servers Slave servers
+run jobs inside them and provide results . Slaves will remain active as long as the master is alive.We also have to launch slave as soon as it is down
+
+To configure Master-Slave architecture, we will have to click managejenkins-->Nodes-->+ New Node -->Node name and select permanent agent .
+
+After this please unserstand a very imoportant field knownn as Number of executors. This indicates the total number of jobs that can be run on a 
+
+server. This generally depends on the number of CPU cores. We also have to give the root remote directory (create an ec2 isntance andn create a new folder
+
+inside it) this is the folder where our work will be stored.Labels/Usage options are staright fwd(can keep use this node as much as possible)
+In the launch method,  try and select launch by ssh agent.
+
+We then have to give credentials ,Host (Host is EC2 instance public IP address) and  user name is ec2-user. After that we also have to copy and paste 
+
+our .pem key from the place where we download it during instance creation. we can then save and apply. The master node is called as Built-In Node and the slave 
+
+node will be below it. Now the most important thing is to configure the slave node in the Built in node job. For this purpose, in the General section  of the
+
+jenkins main job page, we select "Restrict where this project can be run" option and give our slave job ID/Name. With this setting enabled, any triggers on the
+
+main job will be redirected to the slave jobs.
+
+Pipeline Jobs vs Freestyle Jobs: 
+
+All this while we have been discussing about the free style jobs. Freestyle jobs carry an issue of not being able to dynamically
+
+update the content of pom.xml or parse json or yaml files on its own.For example, everytime there is an update related to a project
+
+and if maven triggeres a new .war file, it is not possible with freestyle jobs to update them In such scnearios we use the pipeline jobs.
+
+We use something called DSL (Domain specific langauge) to write a code to perform pipeline jobs
+
+One example of DSL is groovy.This is called as pipeline as code.But please remember that this is used only when even pipeline syntax cant be 
+
+implemented.But generally, we use pipeline code with pipeline syntax.
+
+Pipeline jobs run with a syntax.
+
+Pipeline code also has 2 types of syntax:
+
+1) Scriptbased pipleline -->old ,slow,takes more executors
+2) Declarative -->new, fast, less executors, clear readble
+
+Script based code looks like below
+
+node{
+stage(){
+}
+stage(){
+}
+stage(){
+}
+-----
+
+Declarative syntax looks like :
+pipeline{
+agent any;
+stages{
+	stage('clone'){
+		steps{
+			----
+			}
+		}
+	stage('build'){
+		steps{
+			----
+			}
+		}
+	stage('deploy'
+	 ){
+		steps{
+			----
+			}
+		}
+	}
+}
+
+There are again 2 ways to write this code 1) pipeline script 2) Groovy sandbox
+
+This is seen after we create a new job and this time selecting pipeline instead of freestyle
+
+It can be seen that with this method we will get only 3 options as opposed to 6 in freestyle
+
+These options are General,Advanced project and Pipeline.
+
+Then we click pipeline--> we select pipeline script in definiton and then uncheck grrovy sandbox at the bottom.
+
+Pipeline script from SCM is also similar but instead of writing directly on the UI we write the code in a jenkins file and upload it to 
+
+our GIT We keep that GIT link the project configuration.
+
+
+How to write multiple jobs at a time.. We get pipeline syntax(basic) at the configuration page.Once we click that we get a snippet generator
+
+We can use the tab beside the snippet generator sample step and from that select build:Build a Job option.We also have to give the project/jobs
+to be built and then at the bottom click on Generate pipeline script.This will automatically generate a syntax that can be copied and pasted in the 
+script section of the pipeline option in the pipeline job that we created.After this if we trigger build on the pipeline job, it will internally
+trigger all the jobs that are part of the script section in the pipeline option of our job.
+
+In this way we can trigger builds  on steps related to GIT cloning, Maven war file generation, Deployig this .war file in to tomcat amnd also .
+
+For this example in created, Pipeline pipeline_project_complete in jenkins and wrote the pipeline code for it.
+
+copying this .war file into a nexus repository.In pipeline jobs, we dont see "workspace" folder in the UI as we get it in the Free style jobs
+
+So, for this purpose we have to make use of the step "Archive srtifacts" within the pipeline code in pipeline syntax section.
+
+From this we select the archive artifacts option and then we also select the files to archive and put the content in it as /target/*.war and then we click
+
+generate syntax just in case of other steps in the pipeline syntax generattion. we get the syntax as "archiveArtifacts artifacts: 'target/*.war', followSymlinks: false"
+
+We take this syntax and we add a new step in our original pipeline code and we name it artifact (stage) and in the steps section we copy this code.Please 
+
+remember to follow the flow correctly i.e first step is to clone the build, second is to make .war file that is use maven and then artifact the .war file.
+
+After artifact step is done , we have to deploy the .war file in to tomcat server. For this purpose we use curl command.
+
+curl command contains options like -v and -t in our command which represent verbose and upload.
+
+curl -v -u credentials like admin:admin -T <source> <dest> here <source> represents the .war file location in our jenkins server and dest is the ec2 instance where our tom cat is deployed.
+
+so the actual command in our case looks like
+
+sh "curl -v -u admin:admin -T /var/lib/jenkins/workspace/pipeline_project_complete/target/*.war 'http://http://13.52.99.80:8080//manager/html/deploy?path=/pipeline_maven_application&update=true'"
+
+here curl means copy url 
+
+-v verbose --for checking logs in details
+-u -- command to take username and pwd
+
+admin:admin credentials for tomcat
+-T option informing we are uploading
+
+/var/lib/jenkins --represents the source folder
+
+https://ipaddress and path="" & update=true is the actual destination folder with context path which is the path in which we will upload our. war file
+
+&update =True is option to continue to deploy the changes on to tomcat even when there is no real change in the build.If we do not put this option,
+
+whenever we rerun the above command, it fails as there is nothing to be deployed and its already been taken care.
+
+With the above approach there is an apparent issue  as we are exposing our credentials in this method. So , we have to make sure our credentials are not exposed.
+
+For this purpose we add our Tomcat credentials in the manage jenkins page .Then inside our pipeline job, we create a new pipeline syntax by selecting the option
+
+withcredentials. In this option we select cojoined with username and pwd and give our tomcat ID that we give in the manage jenkins page.
+
+When we generate the pipeline syntax, we get the required output.In our case, its as follows.
+
+withCredentials([usernameColonPassword(credentialsId: 'remotetomcat', variable: 'tomcat_credentials')]) {
+    // some block
+}
+
+We carefully then copy this content below the deploy step and on top of existing code. We also, remove the admin:admin part of the code from the 
+
+current code so that credentials are not exposed and just give a variable syntax like ${<variable name} Usually the ID which we give in the manage jenkins page.
+
+
+To read pom.xml file in our pipeline syntax ,the plugin that we need to use is pipeline utility. Within this plugin we use the API named readMavenPom:"pom.xml"
+
+Also, we use findfiles method get the contect from the above pom.xml.The code can fetch the path of artifact, packaging name, id etC.
+
+After that, if the artifacts are present we upload them to nexus . For this we check the code from page upload artifacts to nexus repository.
+
+The plugin  for this "nexusArtifactuploader".The code looks like below.
+
+nexusArtifactUploader(
+        nexusVersion: 'nexus3',
+        protocol: 'http',
+        nexusUrl: 'my.nexus.address',
+        groupId: 'com.example',
+        version: version,
+        repository: 'RepositoryName',
+        credentialsId: 'CredentialsId',
+        artifacts: [
+            [artifactId: projectName,
+             classifier: '',
+             file: 'my-service-' + version + '.jar',
+             type: 'jar']
+        ]
+     )
+
+
+
+Parameterized builds:
+
+In jenkins, we have an option where we can pass inputs to the jenkins job before we make a build. These inputs can be string,branch and tags 
+
+Branch and tags are direct concepts from GIT and represent the same whereas strings can be name of the server on which we might want to deploy
+
+To check this with example we create a free style project and we select "This project is parameterized" option  and then select String Parameter first
+
+After which we give parametername,value and its description. In case of string based parameters we can give inputs as Dev/Test/Prod. So we can begin with Dev.
+
+Also, please note that while triggering build , we will see the option build with parameters instead of just build now as in the case of normal builds.
+
+In this way, we can also add test and prod servers .this is particularly useful whenever we have a condition about what type of server has to run 
+
+what type of build.
+
+In more real world the deploying of applications may happen on tag and branches of GIT hub.So, we create a new project and give it the name branch
+
+based deployment. But, for this , in the option "This project is parameterized" we dont have an option to add parameter related to GIT.For this 
+
+we will have to install plugin related to it. The plugin name is " git parameter" plugin.After installing it we will get the option in parameterized build
+section.
+
+We then have to continue and update some important information like Name,Description,Parameter type ---TAG if tag case,Default Value ---> tag value from the 
+
+git repo which we want to deploy in our case it was v1.0 from URL :https://github.com/shashanksrinivasa9/first.  
+
+Then in the SCM section we need to update GIT URL , its credentials and also the branch from where we are trying to pick the tag.
+
+In general for tags this can be updated as refs/tags/${tag}. With this only that tag's code will be downloaded.Once we set this up and click
+
+on build with parameters we will see all tags available in our git hub and we can select our preferred tag. We can cross check that with 
+
+files in our workspace of jenkins server and the files in the git hub repo. 
+
+We can also use Branch in place of Tag and deploy it on to our jenkins.In this case, we use git parameter as "branch" provide the default value
+
+which in our case is Master and then the branch value to be picked up as ${branch} We can then select the branch from which we need the code and it 
+
+will be downloaded.
+
+
+Git Hub actions :
+
+Git Hub actions is CI/CD tool from GIT . GIT Hub gives the user a hosted zone  called as "Runner". But for every job git hub actions
+
+give the user a new runner or server.So, if we want to create a simple job push some data, script we can use runners.
+
+To start a job in github actions click on actions in git hub and then click set up workflow for yourself.
+
+It opens up a .yaml file. where we can type the code for running the job.
+
+the main syntax looks like below. we can check the syntax in github sybntax workflow page for details.
+
+name:"job name"  --> project name
+
+on:  ---> this will trigger job on only when
+	push: --->somebody does a push operation 
+	branches: <branch_name> -->on this branch
+	pull: --->does a pull request 
+	branches: <branch_name> ---> on this branch.
+jobs: --->this depects the part of the workflow which is doing a task. for example making the build.
+	builds:--> this is where build happens
+		runs-on:--> <server name> the runner where the build is run which in our case ubuntu-latest.
+	steps:--> this represents the sequence of steps in the process
+		uses: actions/checkout@v1  --> line to tell the process to check out the code from the given branch.
+		- name: Run a one-line script ---> this is the line to represent the one line scripts like printing or giving any other linux command .this always have 2 fileds name,run.name represents the name of the step and run executes the step.
+		run: echo Hello, world!
+		-name:java version
+		run: echo "java --version"
+
+Sample script that i picked up from jmstech git hub  https://github.com/jmstechhome/jmsth21_first.git  is as follows.
+
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: java version
+	
+	
+	name: web deployment
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: deploy tomcat
+      run: curl -v -u ${{ secrets.TOMCAT_USER_NAME }}:${{ secrets.TOMCAT_PASS }} -T /home/runner/work/spring3-mvc-maven-xml-hello-world/spring3-mvc-maven-xml-hello-world/target/spring3-mvc-maven-xml-hello-world-3.0-SNAPSHOT.war 'http://ec2-13-233-173-136.ap-south-1.compute.amazonaws.com:8080/manager/text/deploy?path=/myweb_dev_action&update=true'
+
+	
+We have to write this script and commit it on master branch. After that when we see the actions tab again we will notice that the job would
+
+have run completing all the steps .
+
+The default git hub hosted runner will have some default softwares for java,maven,docker.
+
+If it is not present we can install them.
+
+But,instead of default runners we can also use our own runners as with default runners we cant do ssh to them and we cant store session and store data
+
+with in built servers. So, to do these things we use inbuilt servers which are called as self hosted runners.
+
+code-->compile-->validate-->test-->package-->deploy . this is the general CI/CD flow that we should check in github with self hosr runner.
+
+To connect a self hosted runner to github actionswecreate an ec2 instance  go to the repo-->setting-->actions-->runners and new self hosted runner
+
+and then select the OS and architecture as x 64 we want the job to run on in our case linux. then there are commands to be followed and copied in to our instance.
+
+After that the commands to run github actions on selfhosted runners is same as above which runs on ubuntu-latest.
+
+The difference lies with run on option where inn the case of our own runners we use self-hoested instead of ubuntu-latest.
+
+Along, with deploying our .war file in maven, we can also use nexus to copy the .war file in to nexus repository.
+
+
+
+
+	
+
+ 
+
 
 
 
