@@ -4,7 +4,7 @@ free --> The free command gives information about used and unused memory usage a
 top ---> The “top” command provides a dynamic real-time view of a running system.
 uptime -->  Tell how long the Linux system has been running. w command – Show who is logged on and what they are doing including the uptime of a Linux box.
 df --->disk free --> The df command stands for "disk-free," and shows available and used disk space on the Linux system. df -T shows the disk usage along with each block's filesystem type (e.g., xfs, ext2, ext3, btrfs, etc.)
-du --> disk usage ---> The du (disk usage) command measures the disk space occupied by files or directories. By default, it measures the current directory and all its subdirectories, printing totals in blocks for each, with a grand total at the bottom.
+du --> disk usage ---> The du (disk usage) command measures the disk space occupied by files or directories. By default, it measures the current directory and all its subdirectories, printing totals in blocks for each, with a grand total at the bottom. 
 uname ---> The uname is a command line tool most commonly used to determine the processor architecture, the system hostname and the version of the kernel running on the system.
 cat /etc/osrelease
 curl curl is a command-line tool to transfer data to or from a server, using any of the supported protocols (HTTP, FTP, IMAP, POP3, SCP, SFTP, SMTP, TFTP, TELNET, LDAP, or FILE). curl is powered by Libcurl. This tool is preferred for automation since it is designed to work without user interaction. curl can transfer multiple files at once. 
@@ -55,7 +55,7 @@ crontab -e/l  -- is the command to check and edit our own cronjob
 
 Shell Scripting Basics :
 
-read command  is used to give parameters through command prompt
+'read' command  is used to give parameters through command prompt
 
 $* --> takes input in a string separated by a space by default
 $# ---> prints the number of inputs given via command line
@@ -79,6 +79,30 @@ syntax to print date with time is as below
 
 here it is printing date, month, year,minutes and hours in the order from left to right
 date + %m_%d_%y_%H_%M_%S 
+
+
+What is Localhost?
+In computer networking, host means a “server”. Just like you can put a website on the internet by hosting it on a server, you can make your own computer that server. This connection is called loopback. The IP address for that loopback is 127.0.0.1.
+
+If you’ve put a website on the internet before, then you’ve dealt with hosting companies like Heroku, Hostinger, Netlify, and many others. These are what I refer to as “remote hosts” or virtual servers.
+
+If you’ve served a website on your computer so you can test it without connecting to the internet, what you’re dealing with is a localhost.
+
+So, by definition, localhost is the computer or hostname currently making a request to itself. In this case, the computer is also the virtual server.
+
+What is the IP Address 127.0.0.1?
+If you want to visit a website, you type the website address to your browser’s address bar, for example, https://freecodecamp.org.
+
+The Domain Name Server (DNS) matches the address to a numeric IP address corresponding to that name. In the case of freeCodeCamp, this IP address is 104.26.2.33. This is how it is done for every website you visit.
+
+Localhost is not an exception to this. So, if you type localhost to your browser’s address bar, it transforms to the IP address 127.0.0.1.
+
+This 127.0.0.1 IP address is reserved for local servers on computers, so you will never find another IP address that starts with 127.
+
+But localhost: what? Or 127.0.0.1: what?
+Just like HTTP and HTTPS, the localhost is a protocol. Remember that the website domain name is what follows the http or https, for example, https://www.google.com/ and https://www.freecodecamp.org/.
+
+So, something has to follow localhost: and 127.0.0.1:. That thing is the port number.
 
 version controller:
 
@@ -110,7 +134,7 @@ git push origin master
 create git hib account
 create repo with same folder name
 
-git hub token :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 to push into a new repo
+git hub token :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 to push into a new repo
 
 git remote add <url> to manage the repo from terminal
 
@@ -169,7 +193,7 @@ git checkout
 git revert
 git reset
 
-the areas of GIT are working |(local repo) ---> staging/indexing (after adding )  --->commit (after commiting) ---> git push (after pushing the file to github)
+the areas of GIT are working area |(local repo) ---> staging/indexing (after adding )  --->commit (after commiting) ---> git push (after pushing the file to github)
 
 to move files from working area to staging area we use git add . further to move files from staging to commit area we use git commit 
 
@@ -181,7 +205,7 @@ git checkout <file name1> <filename2> <filename3> will undo changes of multiple 
 
 git diff --> will give changes between commit area file and local file  <the changes added will be displayed in green and then changes removed will be shown in red>
 
-to undo changes from commit area back to working directory we use git reset command
+to undo changes from commit area back to working directory  or staging area (depending on option )we use git reset command
 
 git reset is of 3 types 
 
@@ -195,7 +219,7 @@ git reset --hard Head~1  --> will remove the file from working directory also.
 
 git revert <commitsha> first 6 olr 7 letters of commit id will revert the changes from the git hub all the way upto working directory meaning it will
 
-completely remove all the changes. jt will also commit a small change indicating the revert operation.
+completely remove all the changes. it will also commit a small change indicating the revert operation.
 
 git commit --amend -m "message name " will change the commit message from a previous commit ---> will only work for the latest message
 
@@ -221,7 +245,7 @@ and destination branch.base and compare in case of github
 
 the problem with git squash and merge is we lose the development history and commit data as it willo merge all the commits into a single message . 
 
-with git merge , even then we get the commit history and development history,the  data will not be linear and feature branch data and master branch data
+with git merge , even though we get the commit history and development history,the  data will not be linear and feature branch data and master branch data
 
 get jumbled up. so the problem is not completely solved even with this approach
 
@@ -276,7 +300,7 @@ some basic jobs in jenkins that we see are:
 
 print hello message
 
-pull code from github and work with it --integraten github with jenkins
+pull code from github and work with it --integrating github with jenkins
 
 create sample java project and work on it.
 
@@ -292,13 +316,13 @@ We also give the command to be run for our job at the bottom section. here we ca
 
 is runtime env which we need to select as bash shell. so this can be considered as a very basic job.
 
-second job is to integrate a git repository with jenkins and run it on jenkins. to do this, we should create a new job and then configure our setting\
+second job is to integrate a git repository with jenkins and run it on jenkins. to do this, we should create a new job and then configure our setting
 
 by adding our git repo connection link(used for cloning the git repos give the https link instead of the ssh one).  we also need to give our git hub credential to pull the git changes.
 
-then we have to make sure we install git in our ec2 instance (if not present we need\
+then we have to make sure we install git in our ec2 instance (if not present we need
 
-to install it by using command sudo yum git install -y. Along with congifuiring our git repo within the job page, we also need to change it in
+to install it by using command sudo yum git install -y. Along with configuring our git repo within the job page, we also need to change it in
 
 the main jenkins page by editing manage jenkins page . here it expects the executable path of GIT and if GIT is already installed in our ec2 instance
 
@@ -308,7 +332,7 @@ In Jenkins there is option for us to manage the build trigger automatically. the
 
 they are :
 
-poll scm  ---> here job will be triggered at a specific time if a change is pushed
+poll scm  ---> here job will be triggered at a specific time if a change is pushed.
 
 build periodically ---> job will be triggered in a period after a specific time even without changes by picking latest change
 
@@ -320,7 +344,7 @@ all the above 3 jobs are cron jobs. poll scm and build periodically are pull bas
 
 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 --->github token
 
-to create poll scm in configure page of a jenkins job, in the build triggers section select poll scm and provie the necessary cron job schedule
+to create poll scm in configure page of a jenkins job, in the build triggers section select poll scm and provide the necessary cron job schedule
 
 if the job is for periodical do the same but select build periodically
 
@@ -363,7 +387,7 @@ in pom.xml file, the code we write will help our project download the data from 
 from remote or local repo
 
 Maven project has following lifecycle:
-clean
+clean ---> removes previous artifacts
 validate --->validates project structure 
 compile -->  syntax check 
 test ---> executes test classes. 
@@ -374,13 +398,13 @@ deploy
 
 how will we know our package gives .jar or .war
 
-so in pom.xml file a tag called packaging is present, which givesn info about file is .war or .jar
+so in pom.xml file a tag called packaging is present, which gives info about file is .war or .jar
 
 but by default it is .jar 
 
-we use the lifecycle untill package. so we use mvn <lifecycle COmmand> for the maven project to work for ex maven package
+we use the lifecycle untill package. so we use mvn <lifecycle> for the maven project to work for ex: maven package
 
-in maven package , validate, compile test and package together .. so if we give maven deploy all the steps will get executed
+in maven package , validate, compile test and package execute together with one single command .. so if we give maven package all the steps will get executed
 
 clean is a default lifecycle. every package step will create a target folder which will have test report folder (final output .war file). when we do target again,
 
@@ -389,7 +413,7 @@ it will remove the previous target folder and create new target folder (default 
 use srping3 maven github example (https://github.com/mkyong/spring3-mvc-maven-xml-hello-world) please note all the tags in this link.please understand
 that all the dependncies,plugins etc will be added by the developer.
 
-we alson have settings.xml in our maven project, in this we will have info of remote repository like server details ex: id,pwd private key,file permission usage of proxies etc.
+we also have settings.xml in our maven project, in this we will have info of remote repository like server details ex: id,pwd private key,file permission usage of proxies etc.
 
 to create maven project we use the command : mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
 
@@ -403,7 +427,7 @@ After creating a maven project using above command, we can push the pom.xml to g
 
 as in maven project. Later we should integrate our maven project with the jenkins tool. For this purpose, we have to go to the configure page within the job of our
 jenkins page and add our maven github url .we can use the credentials of our github .  Along with this, the most important aspect is also to present the maven
-build pipeline stage , example : pasckage: in the build steps which help the jenkins understand the step in maven life cycle until which the 
+build pipeline stage , example : package: in the build steps which help the jenkins understand the step in maven life cycle until which the 
 process will be executed. Please note that a .jar file or .war file will be only be created if we give the package command in the build steps section.
 
 Any command representing the lifecycle before package will only execute the operation until that point only.
@@ -420,18 +444,18 @@ It is to be noted that the creation of. war or.jar is dependent on packaging tag
 
 For this purpose, we can fork a java spring boot code from an example github like : https://github.com/mkyong/spring3-mvc-maven-xml-hello-world.
 
-After this we should create a free style job named javaspring anc can integrate our spring boot github with it by giving its url and credentials.
+After this we should create a free style job named javaspring and can integrate our spring boot github with it by giving its url and credentials.
 
 we should again give the option as "package" in the build setting section. So far, we haven't reached the point of deploying our application on to server.
 
-So, for this we use apache tom catn as decribed above. Apache tom cat can be installed in 2 ways .First can be downloaded directly from the apache software
+So, for this we use apache tom cat as decribed above. Apache tom cat can be installed in 2 ways .First can be downloaded directly from the apache software
 
 website and second is through command like sudo yum install apache tomcat -y. Whatever possible manner is used the resultant directory contains three important
 folders that have to be understood definitely by all. They are 
 
 bin --> it contains tomcat start and stop scripts . tomcat just like jenkins is a special service and has to be started using command 
 
-sudo service tomcat start , stop , sttatus.
+sudo service tomcat start , stop , status.
 
 
 conf ---> folder which contains important .xml files like tomcat-users.xml and server.xml which are responsible for username and password details
@@ -442,7 +466,7 @@ the tomcat service and give these credentials, it doesnt work. Reason being in t
 
 we should then open the file server.xml and change the server port to 8081 or 82 any port of our choice. This is to make sure the same port is not in 
 
-conflict with the already existing service (mostly like jenkins). After we do these steps we have to restart the tomcat server before using it.
+conflict with the already existing service (mostly likely jenkins). After we do these steps we have to restart the tomcat server before using it.
 
 Please note that these files are present in the locations mentioned above when we install the tomcat from the website by downloading the zip file.
 
@@ -460,7 +484,7 @@ Maven project. usually present in target folder. so we need to give itn as **/ta
 
 General  diagram of the flow so far along with the details.
 
-Git(for changin files) -->github (online repo to see our files ) ---> jenkins (for integration purpose){maven(for compilation and artifact creation like 
+Git(for changing files) -->github (online repo to see our files ) ---> jenkins (for integration purpose){maven(for compilation and artifact creation like 
 .war/.jar),apache tomcat (for .war file deploying).
 
 Contiuning with above process, after creating the apache tomcat on an isntance along with Jenkins, try and setup tomcat server on a separate instance.
@@ -497,7 +521,7 @@ we need to add nexus service as part of the linux bootup. we need to add a softl
 in the nexus folder, we change the file called nexus.rc which is inside the bin folder and we add user there. Please note that the default
 port in which our nexus service runs is 8081.So,we have to edit our instance's security group to enable this service.
 
-once the port is up and running we can open nexus repo in our server and create a sampple repo for our purpose.After that, to copy the artifacts
+once the port is up and running we can open nexus repo in our server and create a sample repo for our purpose.After that, to copy the artifacts
 we integrate the same through jenkins.
 
 For this purpose, we need to install plugin for nexus to integrate with jenkins. which in "nexus platform". After this is done we need to check for
@@ -551,12 +575,12 @@ add the details accordingly.
 ------------
 
 Msster-Slave architecture:
-There is always dangerof loading the main Jenkins server by running all jobs in it. Instead of that we can make use of slave servers Slave servers
+There is always danger of loading the main Jenkins server by running all jobs in it. Instead of that we can make use of slave servers Slave servers
 run jobs inside them and provide results . Slaves will remain active as long as the master is alive.We also have to launch slave as soon as it is down
 
 To configure Master-Slave architecture, we will have to click managejenkins-->Nodes-->+ New Node -->Node name and select permanent agent .
 
-After this please unserstand a very imoportant field knownn as Number of executors. This indicates the total number of jobs that can be run on a 
+After this please understand a very imoportant field knownn as Number of executors. This indicates the total number of jobs that can be run on a 
 
 server. This generally depends on the number of CPU cores. We also have to give the root remote directory (create an ec2 isntance andn create a new folder
 
@@ -709,13 +733,13 @@ We carefully then copy this content below the deploy step and on top of existing
 current code so that credentials are not exposed and just give a variable syntax like ${<variable name} Usually the ID which we give in the manage jenkins page.
 
 
-To read pom.xml file in our pipeline syntax ,the plugin that we need to use is pipeline utility. Within this plugin we use the API named readMavenPom:"pom.xml"
+To read pom.xml file in our pipeline syntax ,the plugin that we need to use is "pipeline utility". Within this plugin we use the API named readMavenPom:"pom.xml"
 
 Also, we use findfiles method get the contect from the above pom.xml.The code can fetch the path of artifact, packaging name, id etC.
 
 After that, if the artifacts are present we upload them to nexus . For this we check the code from page upload artifacts to nexus repository.
 
-The plugin  for this "nexusArtifactuploader".The code looks like below.
+The plugin  for this "nexusArtifactuploader".The code looks like below.\
 
 nexusArtifactUploader(
         nexusVersion: 'nexus3',
@@ -796,7 +820,7 @@ on:  ---> this will trigger job on only when
 	branches: <branch_name> -->on this branch
 	pull: --->does a pull request 
 	branches: <branch_name> ---> on this branch.
-jobs: --->this depects the part of the workflow which is doing a task. for example making the build.
+jobs: --->this depicts the part of the workflow which is doing a task. for example making the build.
 	builds:--> this is where build happens
 		runs-on:--> <server name> the runner where the build is run which in our case ubuntu-latest.
 	steps:--> this represents the sequence of steps in the process
@@ -813,7 +837,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  builds:
 
     runs-on: ubuntu-latest
 
@@ -836,7 +860,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
+      uses:ctions/setup-java@v1
       with:
         java-version: 1.8
     - name: Build with Maven
@@ -869,12 +893,1342 @@ The difference lies with run on option where inn the case of our own runners we 
 
 Along, with deploying our .war file in maven, we can also use nexus to copy the .war file in to nexus repository.
 
+Docker:
+
+Process before docker 
+
+If we want to run a java applicaton on multiple server there are some preqreusisites
+
+We have to install O.S ,Java,Maven,Tomcat and other than this dependencies. Also, it takes 1 gb RAM 1cpu Core and 15gb hard disk for a 50 MBapplication.
+
+So, a lot of space is wasted. Also at every downtime, we have to redo everything. Also, we take lot of time to do these things.
+
+To remove all these problems, we use Docker, this will take less time and uses less resources as compared to the older technique.
+
+A typical docker ubuntu container takes nearly 70-75 mb. Alpine linux another version uses even lesser space about 5 mb. And the installation 
+
+completes with 1 command.
+
+A major point to understand is difference between Image and container.
+
+
+Image is like switched off mobile and Container is live phone. We have to run image to create a container .Application runs on container.
+
+Container generally means an application. Containers run on  linux machine.Multiple containers can be run on a linux server.
+
+Whenever a container goes down immediately an new container is created by container orchestration tools like K8s.
+
+So, deployment, maintainence and working on containers has become easy by reducing the resource and time to deployment.
+
+What is the difference between monolithic and micro services?.
+
+A monolithic application entire application  (.jar file, db and an application) is deployed in a single place . Its like MVC (model,view controller)
+
+model. Everything will deployed at a sinlge place.But this had obvious issues.
+
+Like if  "x" developers code is working and "y" developer programme doesnt then there is an issue with this kind of approach.
+
+So, the industry started for another alternative. 
+
+Take example of a travel website (searching,booking,cancellation, payment) these modules can be developed by different developers individually.
+
+In this model, each developer deploys their own .jar file.
+
+
+Each service communicateswith on anothert using "RESTFUL" APIs.Agood example is transaction of ATM between 2 different banks.
+
+RESTFUL service provides tools or ms framework like (spring boot,ms languages) 
+
+This kind of job can be done using micros services just like the travelling example.So the dependencies are automatically removed .So, application
+deployment becomes fast.
+
+More reliastice example of Docker.Is the example of transferring things from one city to another. As we keep things in one big container, similarly
+
+all the services will be put in to a container.
+
+Docker slogan is Build-->Ship-->Run.
+
+A docker file (with commands) is built in to Image. The image is stored in a repo by pushing it  (docker hub). The same image can be stored in multiple places
+
+like ECR,Nexus,Git hub The image is then pulled to run the container.This container acts like our application. We can run the application for our purpose
+
+Difference between virtual machine and Docker:
+
+What is a virtual machine?
+
+If we want to install ubuntu on top of windows we have to install VMs. To install VMs we need to install Hypervisor in turn.The process and space the 
+
+computer uses when hypervisor is in use is large.
+
+Generally whenever we use a virtual machine we will see the following hardware/software combo  (from top to bottom)
+
+hardware -->windows -->hypervisor--->(guestos-->lib-->app),repettion of guestos lib and apps.
+
+Where as in case of Docker what we do is we have hardwar --> guestos-->docker daemon-->(app,lib)
+
+In docker we dont need to install hypervysoe,we dont need to install guest os and libraries are also shared between apps (if they are using the same app)
+
+This is acheived by writing the docker file which has details about OS and command to install the reqiured softwares like run java and run maven.
+
+The docker architecture mainly consists of three parts
+
+Docker CLI--> Where we run the docker commands
+
+Docker daemon --> the exact docker container or software where the process is run (container)
+
+Docker hub --> Repo where docker images are copied after buidling
+Docker build, Docker push , Docker pull are some of the basic commands to do these tasks.
+
+Docker CLI is installed automatically. 
+
+Image is created after we build an image. Container will be up and running only after we run the image.
+
+So lets get started with docker by creating a new ec2 instance.
+
+We give the command sudo yum install docker
+
+docker -v--> is the command to check docker version or we can also use
+docker version for more further details. 
+20.10.23 --> is the version installed in my machine.Docker is implemented in go language.
+
+sudo service docker status --> it is the command to check the status of docker daemon.
+
+This completed jenkins with docker freestyle job example
+Now lets take a look @ jenkins pipeline with docker.
+
+
+we can start the docker service by typing the command  sudo service docker start.
+
+sudo docker info --> this command gives detailed information about the docker server with number of images/containers running/stopped/paused etc.
+
+please note that in every command we used so far we had to type the "sudo" command. To avoid this problem we have to enable special
+
+permnissions to ec2-user using commands.So,basically we have to give sudo access to ec2-user. Basically to a user access to any group
+
+the command is
+
+sudo usermod -aG <group_name> <user_name>
+
+so, in our case this will be sudo usermod -aG docker ec2-user.But wehave to restart the terminal of ec2 to make this effective.
+
+docker images -->command to give the list of images in the system.
+
+docker search <image_name> --> to search imaged from dockerhub. --> this will fetch a list of the same image from the hub. we can check
+
+whether they are official image or not and also see the top one with more stars.
+
+Everyn public image is stored in the dockerbub. Our docker knows the docker hub path from the url we get in the docker info command
+
+docker pull <image name> --> command to pull the images from docker hub. for example  docker pull ubuntu---> this will pull the latest
+
+docker inage.
+
+if we want to downaload a speicific version of image we can type as docker pull <image_name>:<image_version>
+
+for example docker pull ubuntu:21.04
+
+Generally, in real time, "alpine" is the linux software is used .This is a light weight linux software. only about 5 mb image
+
+very light weight containers which we cant login but can be used to do simple basic appication with less size are called "Scratch"
+very light weight containers which we cant login but can be used to do simple basic appication with less size are called "Scratch"
+docker ps --> is the command to see the running containers.
+
+docker run -it <image_name> ---> will run the container (this will help the app run in an  interactive way  on the terminal we are using).
+
+check example docker run -it jpetazzo/clock ---> to see the time in UTC on the termninal we are running.
+
+to detach the container from terminal and make it run in the background we use ctrl+p+q command
+
+to check how many containers are running in the system we type docker ps
+
+docker run -d <container name> will run the container in the background and not in an interactive manner.
+
+when we type docker ps and see the list of containers running, we see the names of the containers too. here by default,
+
+container name is assgined by dokcer. if we want to change the docker name to name of our choice we can type the following command.
+
+
+docker run -d or -it --name <yourname> <image name>
+
+example docker run -d --name clock jpetazzo/clock ---> this will give a new container running in the background with your container name.
+
+docker logs<container_id> will give the log details of a particular container. but this will give a lot of information
+
+to check live logs we can use docker logs -f --tail <number of logs> <container_id>
+
+for example we can use like docker logs -f --tail 1 <container_id> we can also use container name too just like 
+
+docker logs -f --tail 1 container name.
+
+To remove running containers, we need to first stop them and remove them.
+
+the command is 
+
+docker stop <container id>
+
+example docker stop efd5a1f414d1 --> One thing to note with this is that stopped containers are not shown in docker -ps command
+
+so, we have to use the command docker ps -a --> to see both stopped and running containers together. "a" represents all.
+
+to check only stopped containers we can use grep command from linux . We can then search it with its status "Exited" string to see the stopped containers.
+
+docker ps -a |grep Exited.
+
+to check only running or stopped container IDs, i mean with docker ps -a ---> along with ids we see other info  like time when created status etc etc
+
+we can use the command docker ps -q or  docker ps -qa
+
+to remove docker after stopping we can use docker -rm <container id>
+
+but to remove docker which is running we have to do it forcefully by the command docker rm -f <container_id>.
+
+Please note that removing a container wont remove its corresponding image.Image continues to stay until we remove it.
+
+Now, to remove the image also we need to use docker rmi <image_id> or<image_name>. But,please note that if we try to remove an image 
+
+that is being used by a container,it throws error and informs us that the image is being used by a specific container.
+
+Please note that when we try to run a container using the command docker run -it --name my_name <image_name>
+
+example: docker run -it --name my_container ubuntu ..this will take us in to the terminal of that container but not our ec2 instance.
+
+Pressing exit or ctrl +c will stop the containers, so if we want the containers to detach and run in the background always type
+
+ctrl+p+q. Always remember stopping is different to completely removing in docker terminology
+
+Another important point to note is , whenever we install a software inside a container using an image that software is specific to that container itself
+
+This means aniother container which is run using the same image will not be having this software. Please make use if "figlet" software to make it 
+
+understand better for yourself.
+
+Once a software is installed in a container, and the container is stopped and removed all the softwares installed in that container are removed.
+
+So, we cant use those software in that container when we create a new spin.
+
+So, if we want to reuse the softwares from previous containers after stopping, we have to create a new image on top of the old container before removing
+
+This new image can be used to run a new container.
+
+so for this we use the commend docker commit. the command looks like
+
+docker commit -m "message" <source_container_id from where we look to copy image> <new_image_name>
+
+example docker commit -m "figlet software" xxxxxxx <source container id where figlet software is present> <new_image name>
+
+then we can run that image and create a new container.The new container will automatically have the figlet software as it was developed from
+
+the software having it.
+
+To go inside a running container the command is 
+
+docker exec -it <contianer_id> <bash> this is particularly useful if we want to perform any debugging .This is very important
+
+we can use 2 docker commands toghether also.
+
+for example, we can use like docker rm -f {docker ps -qa} ---> this will forcefully remove all the containers.
+
+
+So,think of the case where we have to deploy web applications usinfg docker container.
+
+We will see both Java console app and web app (both from existing docker hubs)
+
+As we know, to download an existing image from dockerhub we need to to type docker pull <image_name>
+
+We can search the same from CLI and dockerhub too. In docker hub we can see commands about how to run that particular image.
+
+Take example of hello-world image. Pull it and run it and see the outoput.Since this is a console application after its output is displayed
+
+on the screen it is automatically stopped as there wont be any process inisde it to run.
+
+Once a container is created, we cant use the same name to another container by having the same name. It either has to be removed or we have to give 
+
+our new container a new name.
+ 
+Take use of web application tutum/hello-world also.. We pull it and when we try to run the container we hit an issue with opening the web app on the 
+
+port it is being served directly. We can't directly use the port on which the webapp is served and open it directly .We cant do this as the port is 
+
+not published.So, we have to first publish the port before we can open the web app
+
+so, to publish a port for any web app the command is
+
+docker run -it -p <port number> --name "name of the container" <image name>
+
+example : docker run -it -p 80 --name mywebapp1 tututm/hello-world. By this command, container gets in to running mode and when we see docker ps -a
+
+we will observe that our web app container port "80" is internally assigned to a host port .We can then use our ec2 instance public ip and host
+
+port together to open the application. But please make sure to edit our ec2 security group rules for the new host port before we actually try to open
+
+the webapp. But this is a random port that docker has assigned to us. If we want to publish our own port we can do that also by giving the below command
+
+docker run -it -p <your port number>:<container port> --name "name of container" "image of the container"
+
+example: docker run -it or -d -p 80:80 --name webapp3 tutum/hello-world. In this way, we can open the web app using our own published port .
+
+This configuration of publishing the host port and container port for the usage of opening web app is called "port forwarding"
+
+Please note that once a port is used by a service within our machine we cant use it to any other service. We have to use a separate port number
+
+for the new service.However, if we still want to use the same port we need to use a mechanism called "reverse proxy" (like nginx)
+
+How to push our images to Docker hub?. (Our custom image)
+
+We can push using docker push <image _name>
+
+But, we also need to mention the credentials of the docker accoutn where we have to push. So, lets take an example of copying an already existing
+
+image in docker hub like figlet_image and if we want to copy this image and create a new image on top of it we can use the command
+docker tag <source image> <destination hub>
+
+for example:
+
+docker tag figlet_image shashankkolipaka/figlet_image_copy:v1 (v1) represents version
+
+the exact syntax  used is this: docker tag local-image:tagname new-repo:tagname
+
+Once we create this new image, to push this image in to docker hub we need to give docker credentials
+
+for this purpose we use the command docker login command
+
+once we type docker login command it asks for username and credentials which are (shashankkolipaka and pwd) for my docker hub account.
+
+There is one authentication created in a json file . 
+
+Once we login to the docker hub from the command prompt we can then push the docker images in to the docker hub
+
+the command for pushing is
+
+docker push <dockerhub account name>/image name:(version)--->
+
+example docker push shashankkolipaka/imagename:v1.
+
+Now one command that is missing is creating an image from scratch.
+
+For this we need to understand about custom docker file.
+
+the command that is needed is docker build for this .
+
+What is a docker file?
+
+A plain text file that has set of instructions to build an image.
+
+It contains info about OS,Software,files,command to run the application etc.
+
+the basice commads that are used in docker file are
+
+FROM ---> (Command to indicate from where the image has to be built).
+
+LABEL: info about the author who created the image (optional)
+
+Working Directory: (fo changing paths like cd )
+
+ENV:  setting up variable while running.
+
+ARG: to pass argument while building
+
+RUN: installing softwares or commands while building
+
+EXPOSE: to understand which port our appl using
+
+USER : to understand which user is using:
+
+HEALTHCHECK : to see the health of the container.
+
+ONBUILD : Used in child containers
+
+ADD: Copy files to docker image
+
+VOLUME: Persistant storage.
+
+COPY: Copy files to docker image.
+CMD: Final execution
+
+ENTRYPOINT: Final execution (both CMD and ENTRY POINT are used for making the APP up and RUN).
+
+Take example of Java hello world console application . Clone the java hello world repo
+
+Now think the pre requisities need to run a javaapplication . The things we need are 
+
+
+install java
+clone the code
+javac helloworld.java
+java helloworld
+
+So,the above steps have to be converted into docker file using below commands.
+
+Dockerfile:
+
+FROM openjdk:8
+COPY Helloworld.java Helloworld.java (Copying the file from current path of the file in ec2 isntance to container. we can also use working driectory or 
+
+specify the path if we want the file to go into a particular path inside the container path we can also use copy .. to copyall files from current 
+
+path to container path).
+
+RUN javac Helloworld.java (this is exectued while building the image . This means compilation is done here).
+
+CMD Helloworld --> command to run the application.
+
+once we writhe the above commands into a Dockerfile, we have to build that image using the following command.
+
+docker build -t "image_name:v" . (notice the "." at the end it denotes the current context path of the docker)
+
+so example is docker build -t my_custom_java_app:v1 .
+
+After this command, we can run the image to setupo the container.
+
+docker run -it --name "name" <image_name>
+
+Please note that if there are any changes in the git repo we have to pull the changes to repo again and then run the docker build command again.
+
+Now, after working on a console level application let see about a web application deployment using Docker .
+
+I used spring 3 ecxample. The steps remain the same. Clone the code. Run MVN package command in the command prompt itself.After .war file is 
+
+generated copy it in to the local host to apcahe tom cat server ande deploy it.For this wee need to write the docker file.
+
+But,there is some issue with maven compiler plugin. So i was nt able to generate target folder.
+
+So, the output (.war file was missing). But, generation of .war file using the Docker file from above example causes the size of application inside container to be around 526 mb.
+
+To reduce the size of that particular app size in container we can use light weight images.
+
+FROM tomcat: <tag>
+
+WORKDIR /usr/local/tomcat/webapps  (this is the folder where our .war file is stored).-So, the control jumps to this location. If it doesnt exist it 
+
+creates and goes there
+
+However, if we dont want to use the command WORKDIR we can manually copy the spring.war using COPY command as shown below
+
+then the command is 
+
+COPY <Filename.war> /usr/local/tomcat/webapps/<Filename.war> ---> web apps is the folder inside tomcat where our tomcat holds the .war files.
+
+Finally CMD ENTRYPOINT is needed .But in this case it is now required as it will be picked up from base image. Basically it will check the 
+
+commands in the base image file and start the catalina.sh which in turn will start tomcat.
+
+Finally, as we dont have credentials to open tomcat,we open the app using its public ip:context path (.war file name)
+
+The above example created a containers of size around 700 mB for a small javaapplication.
+
+So, to reduce the size of java app we need to optimize the dockerfile.
+
+Please note that each line in a docker file is a layer. When we build a docker file, everyline is build individually.In this process, docker doesnt 
+
+build the file newly everytime. Instead if the same command is written in some other docker file, it is used a "cache" operation by using the ID of the 
+
+command. So, the layers that are already formed previously are used instead of creating a newe layer
+
+Sometimes when we do the docker build we wont be able to see our changes, we can try and use --nocache=true option while building the docker image.
+
+example docker build <image_name> . --nocache=true.By, default this option is false.
+
+1)Please note that while writing a Dockerfile we can mention the option 'Alpine' in the first command FROM <Image_name>:Alpine
+`
+This is using a light weight image. This is the first step.
+
+2)We can use && for multiple commands ---> for example if we have 2 continuous RUN commands we can club them together using  && commands
+
+we can also use next line command \ instead of && also for making multiple commands run together.
+
+3) Avoid unwanted copying of files. Remove unwanted files like tar aor zip files once work is done
+
+4) Multi stage  builds--> We have multiple FROM commands in single Docker file. O/p  of first RUN  command will be taken as i/p to the next RUN 
+
+command. 
+
+Note that we also have WORKDIR command in a docker file.  What is the use of thisF
+
+For example, if we have command like docker exec  -it "container id"  of tomcat image  --> we will observe that the afer logging in
+
+the control is not a general ec2-user instead we observe that /usr/local/tomcat is where the command prompt is openend.
+This is due to the reason that inside the dockerfile of that base image ,/usr/local/tomcat is mentioned as the WORKDIR.
+
+This is mainly useful when we want to copy files from source to destination. Automatically the required file from our set path is copied 
+
+to destination.
+
+Different OS versions have different Package manager.Package manager is command used to install softwares in the machine .Package managers and OS version
+
+combinations are given below.
+
+Centos --> YUM
+
+Ubuntu  --> APT
+
+Python -->Pip (python inline package)
+
+alpine --> apk
+ 
+node js  --> npm (node js package manager)
+
+So, to install any packages within python/nodejs we need to install pip and npm (respectively). But, for ubuntu,centos,apline we dont need any 
+
+pacakage managers because they are at O.S level.
+
+
+Node JS application deployment.
+
+So,first we begin with ouyr own nodesjs base image instead of the ones present in docker hub.
+
+To deploy an app using css/nodejs, we need to understand the dependency softwares that have to be installed.
+
+For this purpose, we need to install nodejs ,npm, and a https-server.All these 3 should be written in to a dockerfile.
+
+So, we need commands for the working with the above 3 dependencies.
+
+so the dockerfile should look like 
+
+FROM ubuntu
+LABEL skolipaka221@gmail.com
+WORKDIR /USR/APPS/Docker
+RUN apt-get -y update 
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+
+Instead of the above multiple lines, we can write them all into a single layer using && and \
+
+FROM ubuntu
+LABEL skolipaka221@gmail.com
+WORKDIR /USR/APPS/Docker 
+RUN apt-get -y update \
+&&apt-get install -y nodejs \
+&&apt-get install -y npm \
+&&npm install -g http-server
+ADD . .
+EXPOSE 8080
+CMD["http-server","-s"]
+
+Then clone the repo https://github.com/ybmadhu/web_login_automation . Change the Dockefile inside it and replace it with the above commands
+
+After that build the image with the command docker build -t "image_name":v1 .
+
+It will take some time in the first instance for the image to get built.
+
+then we can run the container using the image that we built. The command for it is 
+
+docker run -it --name "your container name"  -p 8080:<container_port> "image name"
+
+We were able to see node js application deployed and running and we will observe username and password login.(Please note that we should enable
+
+port 8081 in our aws security group ).
+
+
+Lets see instrucntion 
+
+RUN ADD COPY CMD ENTRYPOINT.
+
+
+ADD and COPY  --> the purpose of these commands is to copy files from host machine to docker images and then finally to container
+
+But what is then exact difference between the 2
+
+COPY: Copy can only copy from host machine to docker image
+
+ADD: add can copy from host machine and remote urls also to docker image. 
+
+Additionally, the main point is if we have tar file to docker image "ADD" will copy the file, extract the tar file and remove it
+
+whereas "COPY" will only add the files from host machine to docker image but, it wont untar or remove the tar file after extraction.
+
+If we use "COPY" we should untar and then delete the file also. Please remember, "ADD" will do all 3 the tasks (copying, untar and removing)
+
+only when the file is in host machine,If the file is present in the remote URL it acts exactly like COPY .
+
+So, to check practically, create 2 files sample.txt and example.txt. Then use COPY and ADD for each of them and move them to any temp folder .
+
+We can write a Dockerfile to see this operation. The base image that can be used in BUSYBOX.
+= 
+FROM busybox
+ADD sample.txt /tmp
+COPY example.txt /tmp
+CMD ['sh']
+
+After writing the above Dockerfile, if we build it and run it we will see that shell is openend as CMD instruction does it and inside /tmp folder,
+our 2 files are present. This is example of ADD and COPY from from host machine to docker image/container
+
+Sourcecan file/directry in COPY but in ADD we can use when we have tar file or if the source is URL
+
+Lets ee ann example with tar file
+
+command to create a tar file is tar -cvzf <tar_file_name> ./
+FROM busybox
+ADD tar_example.gz /temp
+CMD ["sh"]
+
+this will directly copy ,extract and delete the tar file. However, if we use copy it only Copies the .gz file but not untar it.
+
+Then we have to untar it and remove it within the dockerfile command.
+
+Now lets look at the following commands.''[
+\]
+RUN ---> Run is mainly used during Build time (when we do docker build this is executed.)
+
+CMD , ENTRY POINT: --> (when we do the docker run this commands are executed).the command that is basically
+
+expected to run after a container gets into running mode is kept here.
+
+All the above 3 have 2 forms Shell and Exe.
+
+Shell form --> direct commands like RUN apt install git --> general format.
+
+EXE form--> RUN['apt','install','git'] --> this is used if we want to give any parameters to our command .
+
+We will see braces for exe form whereas shell form doesnt have any braces.
+
+To try out a basic example containing RUN,CMD and Entrypoint all together i used a sample docker file to download python
+
+In the docker file both CMD and Entrypoint are written wantedly to check which one is executed first. We will observe that when we have
+
+both CMD and ENTRYPOINT priority is given to ENTRYPOINT. 
+
+In the same way if we have multiple CMDs in the same dockerfile --> then the priority is given to the last CMD.
+
+Multiple CMD commands are allowed but not multiple ENTRYPOINT in a dockerfile.
+
+Between CMD and Entrypoint a major difference is CMD allows parameters to be overridden whereas with Entrypoint this is not possible.
+
+for more details on RUN, CMD, Entrypoint please check https://www.baeldung.com/ops/dockerfile-run-cmd-entrypoint
+
+for example:
+
+FROM ubuntu
+
+CMD echo "hello world" --> when this is run , we will see output helloworld and we also observe bash command we can give bash and then helloworld is
+
+overridden with that command from bash Where as if we use ENTRYPOINT this is not possible
+
+Lets now see Onbuild and Health check ..
+
+ONBUILD :
+
+When we have a dockerfile and inside it if we have RUN command  with an echo statement and CMD command for starting bash shell
+
+Now, when we use ONBUILD infront of these commands, they wont be executed when the docker file is run.
+
+But, instead they are run inside a child dockerfile,before its own commands (child docker file)  are executed .
+
+So, what is the usage of executing commands like this. This is particularly useful when we are trying to run multiple dockerfiles
+
+which have a common code, we dont have to repeat the same steps in all the dockerfiles. Instead we can write the common code inside a parent docker file
+
+and we can use that parent dockerfile in all the child dockerfile..But, we have to use the parent dockerfile as base image for the child docker files.
+
+So, please note that the Docker build command executes before any commands inside the child docker 
+
+Healthcheck command:
+
+Consider if a container is running.Hown will we know whether our container is healthy (meaning our APP is running or not).
+
+We can check by opening our app and seeing if it is up. This will work if we have just one app. But,what to do if we have 100s of them.
+
+For this purpose, weuse Healthcheck in our Dockerfile.
+
+So, to do this practically, we create a folder named health check move into int and write a dockerfile.
+
+We can then write a dokerfile. In the dokerfile we keep requirements.txt and put flask framework for pip installation on this.
+
+After this app.py--> python file for just doing a hello world.
+
+Flask framework runs on port 5000.
+
+Then create a docker image and run it. 
+
+In docker run command  generally we give docker run --it --name "name of container" -p port image:v1
+
+but, with the above option , once a container is in stopped, we cant use the container name again. To make use of the container name  once it is 
+
+stopped, we use the option docker run --rm  --name :name of the container -p image of the docker:v1
+
+we have a command to remove all the stopped containers and images from printing on the command prompt.
+
+The command for that is docker system prune -a.
+
+So, when we use instruction like HEALTHCHECK CMD curl <url> --> this instuction runs as part of  CMD command during Running step.
+
+Once we build and run the image, and see docker ps -a , we can see the container is running and along with it we will also get to know its health 
+
+status. So, we dont have to open the application on the browser again.
+
+Expose Command:
+
+To make users understand on which default port our application is running on , we can use EXPOSE command in our dockerfile.
+
+Assignment:
+
+A java jar file is given. We need to write a docker file, using that jar file. It runs an application which needs a property file (we will mention username,
+
+pwd, url) So, the property file and the jar file have to be copied in the docker file and once we run that docker file,the java app shoukld run.
+
+We need to create 2 containers one each for app and database.
+
+ARG vs ENV
+
+ARG is build time variable and ENV is run time variable.
+
+We can overwrite ARG and ENV variables accordingly. That means variables set with ARG canb be overriden during build time. Whereas variables
+
+set with ENV can be overriden during the RUN time.
+
+Please note that the first instruction in a Dockerfile is always "FROM". On top of "FROM" we can pass one special instruction i.e, ARG.
+
+
+So, to override the variable that is set with ARG instruction during the Build step, we have to set the command as follows through command prompt
+
+docker build -t <imnage_name> --build-arg "VARIABLE_NAME"= <overridden value>.
+
+
+The same thing can also be done during the RUN time also. 
+
+So, to do this we have to submit the command during RUN time as
+
+docker run -it --name <name of the container> -e <variable_name>=<new value> <imnage_name>:version of the image.
+
+
+Docker Volumes:
+
+
+Generally we have a linux server which has our container. In container we will have some files.
+
+If we loose the container for any reason, the files inside container (like jenkins jobs,property files), we will loose the data also.
+
+In real time scenarios, we dont want to loose this data. We will keep it somewhere (outside the docker container area)  , and we will load that data in to a new container.
+
+The new container, will contain all the previous data. For this purpose, we use something called "DOCKER Volume"
+
+We can store the files both in docker daemon and host area . If we use Binmount in docker volumes it will be stored in host area (file system) .Other wise it 
+
+gets stored in docker area /var/lib/docker.
+
+So how do we decalre these volumes.
+
+So, while running we give the command 
+
+docker run -v <source path> :<destination path>
+
+docker -v /data/my_data :/data/my_data ---> the path on the left hand side is host path and the path on the right hand side is the container path.
+
+We can mentionn multiple -v s to keep multiple volumes. 
+
+Please note that container data is ephemeral (meaning once the container is lost , the data is also lost).
+
+To see the list of docker volumes created we need to give the command
+
+docker volume ls. 
+
+to create a new docker volume we need to run the command 
+
+docker volume create --name <volume_name> 
+
+But the volume_name folder wont be stored in ec2-homeuser directory instead it gets stored inside /var/lib/docker folder.
+Within the docker folder we will have other folders named volumes and _data which is the exact location where the content related to our docker volume
+is stored.
+
+/var/lib/docker/volumes/mydata/_data.
+
+So, if we discuss the problem.. suppose
+
+we have to  run  a container named ubuntu inside the _data folder of the created docker volume.
+
+Create  sample.txt file inside it and put some text in it.Then if we stop the container , the files inside it are lost permanently.
+
+We cant retrieve that data unless we persistently store the data. To do this we have to make use of the following command
+
+docker run -it --rm -v "volume_name":/<container_folder_name> --name "container_name" "image_name"
+
+docker run -it --rm -v my_volume:/ (/ --> indicates the current container )my_data(folder within the container) --name "ubuntu_c" "ubuntu"
+
+please note that if the folder within the container is not present it is created also with the above command.
+
+So, once we run a container with the above command , it creates a new folder with that name and then we can keep 2 files inside it namely
+
+sample.txt and some.txt. After that if we stop the container , and come out to the server workspace (/var/lib/docker), we will be able to see the 
+
+2 files that were removed as part of closing the container above. This is because it has be stored in to the persistent storage of the docker volumes
+
+Please note that only the files inside the folder that we mentioned in the docker run command above are stored into the docker volume area but not any other.
+
+Here one more important point to note is, the data is copied from volume to container space and container space to volume in bi directional manner.
+
+This means any changes to the volume area will automatically copy the contents into container and any changes in the container area will do the same 
+
+in the reverse manner.
+
+Exit command can be used we will lose the container if we start it with command docker run --it --name <name of container> <image of container>
+
+however if we execute docker exec --it <docker id> and then  do exit, it wont remove the container permanently. it justs terminates the existing
+
+terminal of that container.
+
+So, far the data (i.e) the volume we created has been storing in the docker area. But, how to store it in the File system . For this we will use
+
+bind mount
+
+So,for this we create a dir in our ec2 user path (of our server), (we can even keep any txt file inside this path if needed)
+
+then we run any docker image like below
+
+docker run -it --rm -v <path_of the folder in our server which we created in the above step>:/<container folder where we would like to copy files from our host machine> --name <container name> <image name>
+
+in this way the container can be persistently stored in the filesystem and its content get stored in the directory that we created.
+
+the same above command can also be used by giving $(pwd) instead of absolute path (by replacing /home/ec2-user.
+
+
+So, to summarize We can create volumes or keep a persisitent storage of contianers in below ways 
+
+first create a docker volume
+docker create volume <volume name>
+
+docker run -it --rm -v volume_name:/container folder --name "container_n ame" "image_name"
+
+or we can store inside the file system by directly running the command in bind mount by first creating a folder and then running container
+
+docker run -it --rm -v $(pwd)/folder_name:/folder_name --name <container_name> <image_name>
+
+Jenkins on Docker .
+
+Lets take a scenario , where nexus,jfrog,docker private repo, jenkins having some data in container, and if the container goes down all
+the data inside them goes down.But, Once we attach the data to a volume and if we run a container, we will get the data back.
+
+Lets look at the example with Jenkins example.
+
+please run a jenkins imaage using below command
+
+docker run -d -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts-jdk11 (the second -p with port number 50000:50000 represents maste-slave port service)
+
+Once we run the above command jenkins is already installed and we can login to jenkins by using public ip and 8080 port.
+
+But,as it will look for passwword which we can get from /var/jenkins_home/secret ---> this is setup in the docker file of the jenkins image that we 
+
+downloaded.  With this single command, we can completely install jenkins .
+
+After that, we can check by creating a job in the jenkins container and removing it. We can then check if the volume can keep the data persistently.
+
+Generally, speaking all the docker images that we build are stored in dockerhub.But in real time there are other repositories like jfrog,nexus,ecr and docker private repo.
+
+So, then i created a new job first job in the jenkins container and ran it.After that if i remove the container completely we will loose the data i.e the jobs which we created permanently
+
+This is because we didnt keep the data in the persistent storage .
+
+So, we have to keep the persistent volume to retrieve the data. This is done using the below command.
+
+docker run -p 8080:8080 -p 50000:50000  -v $(pwd)/jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk11 , but run it using a root account by giving
+
+
+docker run -d -u root -p 8080:8080 -p 50000:50000  -v $(pwd)/jenkins_home:/var/jenkins_home --name myjenkins2 jenkins/jenkins:lts-jdk11
+
+with this we will get our initial pass inside the folder jenkins_home of our file system. 
+
+Then we can later create a new job and build it. Now, after this if we exit the container and remove it .But with the above command that we used
+
+when we create a new container of jenkins, we will still be able to login to the new jenkins page with our old pass word and will be able to see the 
+
+jobs that were created previously. This is due to the fact that we have used the persistent storage of the data in the above commands.
+
+
+Also, please note that we have a command with option --restart=always, to ensure our jenkins service or any other service running on a docker
+container may be automatically restarted after every instance reboot without the need of explicitly restarting it.
+
+docker run -d -u root -p 8080:8080 -p 50000:50000 --restart=always  -v $(pwd)/jenkins_home:/var/jenkins_home --name myjenkins2 jenkins/jenkins:lts-jdk11
+
+
+Docker private Repo:
+
+Instead of using docker hub we are going to use docker hub private account ,our own private repo, nexus or jfrog or ECR.
+
+all these can be usedto push our docker images.
+
+To create our own private repo we need to install a software called "reigstry" this can be used to store our own images. This can be downloaded
+
+from dockerhub. Go to docker hub search with registry and select the latest one.
+
+
+so the command to start a registry container is as below.
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+Once the container is up and running we can push the image.
+
+This is done by downloading any existing image like ubuntu and then creating a new ubuntu image (replica) of it and pushing it on to our repo
+the following commands help us do these
+
+docker pull ubuntu
+
+docker tag ubuntu localhost:5000/ubuntu:v1
+
+Similarly please do it for another image alpine.
+
+Just repeat creating a new tag for v2 for both of the above images.You can notice that, while we do this operation the original image and the 
+
+2 newly created images will be having the same ID.This means they all are acted upon at the same time and will work similarly at all times.
+
+Now all we need to do is push these newly created images in to our private repo.
+
+this is done by the command
+
+docker push <image_name>:version number. Now, we can push all the 4 images using the same command by giving their specific image name and version.
+
+As an experiment, now please remove the images by docker rmi command. Once we do this task, the images get removed.If at a later stage we want to
+get the images back, we can do that by directly  pulling by below command
+
+docker pull <image_name>:version_number. This helps the user to automatically download the image from the private repo which we created using registry container.
+
+In this case please note that the images can be downloaded succesfully only when the container is up and running.Once that is deleted, the images cant be dowloaded again
+
+So,to keep the images data inplace we have to put them in a persistent storage.This means we have to create a volume and put it there.
+
+To run a docker container by keeping the volume option enabled we need to use the following command. This is picked up from the website 
+
+https://docs.docker.com/registry/deploying/
+
+docker run -d \
+  -p 5000:5000 \
+  --restart=always \
+  --name registry \
+  -v /mnt/registry:/var/lib/registry \ ---> here contents from /var/lib/registry are stored in to /mnt/registry 
+  registry:2
+
+with the above command executed, we can see that images that are initially pushed in to docker private repo using registry container can actually
+
+
+be retained in volumes even when we try to pull them after the container has been removed. (But, first we need to push them in docker private repo)
+
+
+docker run -d -p 5000:5000 --restart=always --name=registry -v /mnt/registry:/var/lib/registry registry:2
+
+In docker private repo we dont have an UI. So,how to check all the versions available ?
+
+We need to use Docker private registry rest api.
+
+
+the command we use is curl -X GET http://localhost:5000/v2/_catalog
+
+Storing Docker images in Nexus:
+
+Just like Docker private repo we ca use nexus also to store the images .Along with nexus we also have Amazon ECR.
+
+ECR is full form of elastic container registry. this is a service available in the AWS 
+
+Once we login to our AWS account and select for ECR we get its details.  We create a ECR for ourselves.We then follow the steps to push the 
+
+image in to the ecr .(We have to use AWS CLI for this).Also, we need to authenticate docker client token with the AWS ECR registry.
+
+https://www.youtube.com/watch?v=O6wPavc-xuc
 
 
 
+How to build docker images using jenkins :
+
+We can do it in 2 ways
+
+Install Jenkins and Docker manually and add jenkins to docker group
+
+Second one is to create a dockerfile and finish it.
+
+Lets see an example where we run jenkins on a docker instance by using the below command
+
+We use the already exisiting jenkins image  and run a new container.
+jenkins/jenkins lts-jdk11
+
+docker run -d -u root -p 8080:8080 -p 5000:500 --name=jenkins_new -v $(pwd)/jenkins_home:/var/jenkins_home jenkins/jenkins:lts-jdk11 --->understand each and every part of this command correctly.
+
+Then we can open the jenkins page on 8080 port in our server.Later create a docker test job and run it by giving a sample docker command like
+
+docker images. If we run our job, we will see that our job fails.
+
+
+To solve this problem we need to add the volume of our docker. for this the command is 
+
+docker run -d --restart=always -u root -p 8080:8080 -p 50000:50000 -v /Jenkins_home:/var/jenkins_home -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --name jenkins5  jenkins/jenkins:lts
+
+
+-v /Jenkins_home:/var/jenkins_home -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock ----> please understand all the volume creations in this command clearly.
+
+all these reperesent in  serial manner from left to right ---> container data, update the softwares that are installed in our container , run the docker daemon (so that we dont have to restart it again) and 
+
+After wards we have a new jenkins page and then we can login to that jenkins page by using the credentials that are given on the UI page of Jenkins
+
+/var/jenkins_home/secrets/initialAdminPassword
+
+After this we can then create a new jenkins job and run a sample command like docker version which in turn will provide us the docker version number.
+
+But,the above is  a very very basic job.Lets take a look at a free style job with jenkins. In this task, we will also make use of a basic Dockerfile
+
+that will run an application based out on Java
+
+The freestyle job with jenkins contains the following steps to be completed.
+
+git (code pushing) -->jenkins (fetch the changes|)--> build (build the docker image) -->push the built image to Docker hub or ECR.
+
+The dockerfile we wrote looks like the below:
+
+FROM openjdk:8
+COPY HelloWorld.java HelloWorld.java
+RUN javac HelloWorld.java
+CMD Helloworld
+
+After writing this docker file we add ,commit and push this file on to our GIT hub repo.
+
+Later return to the Jenkins page and add our git hub credentials and trigger build.
+
+Now, to push this built image on to docker hub we go back to our job page and check if we have any option to do that.
+
+Unfortuantely, we dont find any option to do itl Hence, we have to download a plugin named
+
+cloud bees docker build and publish.
+
+Download this plugin and complete the required crdentials Then if we trigger the build it will automatiacally push our image to our dockerhub,
+
+Now,check how we can push a docker image in to docker hub using jenkins pipeline method rather that free style.
+
+Jenkins pipeline code plugin is allowed by default in Jenkins.
+
+so the pipeline is generally written as
+
+pipeline{
+agent any{
+stages{
+	stage(){
+		steps{
+			}
+		steps{
+			}
+			
+devsecops --> at everystep there will be security check .this is called devsecops.
+
+The user has to create a pipeline job and then choose a basic java project (to begin with just a hello world project is fine).
+
+Then, we have to write a pipeline script. 
+
+The pipeline script may follow the below structure
+
+set environment -->clone  the build --->build the image --->push the image  ---> remove the image.
+
+For this to happen succesfully, we need to install docker pipeline plugin.
+
+Now let us see the part of pushing our image in to ECR .
+
+First we start our Docker instance. Then we need to create a new repository inside the ECR.
+
+We can create a new repository by name tomcat_app in ECR.
+
+ECR can be logged in using the AWS CLI or directly from the UI console.
+
+For integratiing ECR with jenkins we have to install a plugin called Amazon ECR . Then we need to understand that have to givee
+
+permission for jenkins job to access AWS service. This is done creating a user called Jenkins in AWS IAM service and providing it 
+
+with full admin rights and permissions. After that to access the AWS console by the jenkins job we have to get full access key and secret key.
+
+These are generated within the AWS console and kept aside.
+
+Then we have to write the pipleine code as below.
+
+The pipeline code follows in this manner
+
+pipeline declaration --> tools  being used(maven in this case) ---> environment setup (version number of image project name,image number,ecr url,ecr cred),
+
+stages in the pipeline like build war file, building image and pushing image (for building and pushing image we use docker.build and docker.pushwithRegistry commands embedded
+inside a script) and finally we remove the image that is pushed in to ecr registry everytime as it will be unnecessary data in the ecr registry.
+
+
+pipeline{
+	agent any
+	tools{
+		maven "maven 3"
+		}
+	environment{
+	VERSION="${BUILD_NUMBER}"
+	IMAGE="tomcat_app"
+	PROJECT="$IMAGE:$VERSION"
+	ECRURL = "133538478978.dkr.ecr.us-west-1.amazonaws.com/tomcat_app"
+	ECRCRED = "ecr.us-west-1:aws_jenkins_credential"
+	}
 	
+stages{
+	stage('get scm'){
+		steps{
+			git credentialsId:'docker_jenkins_github',url:'https://github.com/shashanksrinivasa9/spring3-mvc-maven-xml-hello-world'
+			}
+		}
+	stage('build'{
+		steps('build war file'){
+			{
+				sh "maven package"
+			}
+		}
+	  }
+	stage('build image'){
+		steps{
+			script{
+				docker.build('$IMAGE')
+				}
+			}
+		}
+	stage('push image'){
+		script{
+			docker.withRegistry(ECRURL,ECRCRED){
+			{
+			docker.image(IMAGE).push()
+			}
+		}
+	  }
+    }
+  }
+	post
+	{
+		always
+		{
+			sh " docker rmi $IMAGE | true"
+		}
+	}
+ }
+
+Similarly to setup a freestyle job that performs pushing docker image to ECR .
+
+we have to create a new free style job. Put the required git hub url and credentials
+
+give the details of maven maven version and goal)
+
+Use docker build and publish section and enter the details as required.
+
+
+Multi configuration Jobs:
+
+In real time three environments will be present development,pre-production and production. Then if we want to deploy a single job
+
+on to multiple environments at one shot. Then we use of something called multi config jobs.
+
+In jenkins home page, we have multi configuration job section.
+
+Then we need to take a git repo where we will be having the files related to all the 3 environments in a single folder.
+
+
+
+
+
+
+
+
+
+Docker compose:
+
+Whats the use case of Docker compose:
+
+If we have 10 images in our project how do we run 10 docker images. Whats the command Docker run.
+
+If we 10 containers, we have to run the command 10 times.SSimilarly we have to give docker stop 10 times also to stop them all.
+
+So, for this purpose we use docker compose file.
+
+Every docker compose has a version .Docker compose and docker software version should match at everytime.\
+
+So,first install docker compose from the link : curl -SL https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+
+This gets installed in /usr/local/bin/docker-compose.
+
+Please note that docker-compose is fianlly an executable file and we can give it executable option by the command
+
+chmod +x /usr/local/bin/docker-compose
+
+We can check the version of docker compose by typing the command docker-compose --version
+
+Docker compose is a file with collection of all docker commands and to convert them in to a .yaml file.
+
+The docker compose file starts with the command Services --> divides the number of container and represents  the individual  container name, it also carries information related to ports,volumes
+
+of that particular container.
+
+So, to implement a project using dockercompose model  we need a dockerfile, dockercompose file and we need to run the dockercompose up command to start the  containers.
+
+We have to first install docker compose using the docker installation command from the web server.
+
+docker compose  gets installed on /usr/local/bin/dockercompose ---> we need to give permissions by giving chmod +x 
+
+We can make use a flask framework (based on python ) project to check the real time example of a docker compose exanmple.
+
+Create a folder in our ec2 instance and name it docker-compose. Then, we can copy a sample python file named App.py.
+
+This App.py , does the task of checking how many times a webpage is hit and stores its value inside a data base called "REDIS"
+
+"REDIS" runs on the port 6379
+
+App.py code 
+
+
+import time
+import redis
+from flask import Flask
+app = Flask(__name__)
+cache = redis.Redis(host='redis', port=6379)
+def get_hit_count():
+ retries = 5
+ while True:
+ try:
+ return cache.incr('hits')
+ except redis.exceptions.ConnectionError as exc:
+ if retries == 0:
+ raise exc
+ retries -= 1
+ time.sleep(0.5)
+@app.route('/')
+def hello():
+ count = get_hit_count()
+ return 'Hello World! I have been seen {} times.\n'.format(count)
+if __name__ == "__main__":
+ app.run(host="0.0.0.0", debug=True)
+
+
+We will need to install both the dependencies of the python file (redis and flask) .
+
+So, we create a separate requirements.txt file and copy both the files inside the requirements.txt file and provide them as inputs to the PIP installer.
+
+For this purpose, along with the Flask we can also install redis in a separate requirements.txt file.
+
+We should then write a dockerfile like below
+
+FROM Python:<version_number>-Alpine  
+COPY . /code
+WORK DIR /code
+RUN pip install -r requirements.txt
+CMD['python','app.py']
+
+
+The steps in the above docker compose file can be understood as below.
+
+FROM <> -<> --> download (build) a particular image and its version.
+
+COPY ---> copy all the files from the current path unto /code folder of the container.
+
+WORKDIR ---> move the working directory to /code
+
+RUN ---> install the softwares from  requirements.txt using the pip installer during the image building time
+
+CMD ---> runs the python app after container build command is given.
+
+We can then write our docker-compose.yaml file as below.
+
+version: '3'
+services:
+ web:
+ build: .
+ ports:
+ - "5000:5000"
+ redis:
+ image: "redis:alpine"
+ 
+ This is representing the version of docker compose file, "services" ---> represents the division from where the containers can be created.
+ 
+ web/redis are the container names. build builds that particular image version (like web latest version) and if we want a specific version to be installed
+ 
+ we can mention it using the "image" tag. "Ports" is used to expose the port number on which that particular container's service is running.
+ 
+ we then make the docker-compose up by running the command docker-compose up .
+ 
+ Check out awesome docker compose github repo to see more examples on docker-compose.
+ 
+Docker Networking:
+ 
+How are 2 containers communicating. How does an ip address get assgined to a container. how to create a custom network.
+
+Lets see all details about docker networking.
+
+In general once docker is installed a default network named docker0 (bridge) is automatically created. There are 2 other networks created along with this 
+
+named host and none. This can be seen using the docker command docker network ls.
+
+Whenever a vm or a server is created on top of machine the internet capability on the created server or VM is enabled by the help of the bridge network.
+
+Also, as soon as we run a container we can see a new network named "veth" getting created. This represents the network of the  newly created docker container.
+
+Please note that for all the containers that get created, the default bridge network i.e named as docker0 gets mapped to newly created container networks (like vetho ,veth1).
+
+To understand what will be ther ip addresses that get assigned to our containers we can make use of the command
+
+docker inspect container <container_id>.
+
+Now, to check if 2 containers running on the same default bridge (docker 0) are communicating or not, we need to install networking tools using the command.
+
+
+apt-get update && apt install -y iputils-ping && apt install iproute2 -y. Please note that we have to install these tools on both the instances.
+
+Then we can ping the second container from the first container bash using ping <ip_address> commnand.
+
+Now, to check a scenario, where we have a custiom built network, with 2 containers trying to connect to containers inside the default bridge network.
+
+For this to happen we first need to create a custom built network on top of that we have to run 2 containers (install networking tools on them).
+
+docker network create mynetwork --subnet=10.0.0.1/16 --gateway=10.0.10.100 ---> this will create a custom network with 2 power 16 CIDR block
+
+After, creating a nee wnetwork and containers inside that , we can try and conncect the container inside our new network with the default network containers using the below command.
+
+docker network connect <bridge> <new_container_name> After this we can ping the containers in default network from the containers in the new network.
+
+
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
