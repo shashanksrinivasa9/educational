@@ -1,0 +1,32 @@
+Kubernetes architecture:
+
+K8s architecture can be divided in to 2 planes control plane and worker nodes.
+
+
+Control plane has following components
+
+1)API server --->
+
+2)Scheduler ---->
+
+3)Controller-Manager --->
+
+4)ETCD  ---->
+
+5)Kubelet --->
+
+6) Kubeproxy ---> 
+
+Worker nodes has following components
+
+Node --> 
+
+Pod --> 
+
+Container
+
+Ec2 instance
+
+docker
+
+
