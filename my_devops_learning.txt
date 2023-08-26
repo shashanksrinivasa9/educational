@@ -26,6 +26,10 @@ su <username> is used to switch the user in the terminal
 netstat -plnt is the command to check if a service is up and running or not.
 ps -ef <command to check what processes are running>
 
+useradd -d /home/ansi -m ansi ---> to create a user.
+
+passd <password_name> to create a password for the user 
+
 
 question:
 
@@ -2009,14 +2013,6 @@ In jenkins home page, we have multi configuration job section.
 
 Then we need to take a git repo where we will be having the files related to all the 3 environments in a single folder.
 
-
-
-
-
-
-
-
-
 Docker compose:
 
 Whats the use case of Docker compose:
@@ -2169,6 +2165,746 @@ docker network create mynetwork --subnet=10.0.0.1/16 --gateway=10.0.10.100 ---> 
 After, creating a nee wnetwork and containers inside that , we can try and conncect the container inside our new network with the default network containers using the below command.
 
 docker network connect <bridge> <new_container_name> After this we can ping the containers in default network from the containers in the new network.
+
+Ansible:
+
+What is a configuration management.
+
+To execute a command on multiple servers at a single point of time we use Configuration management tools
+
+Some examples of configuration management tools are 
+
+1)puppet
+2)Chef
+3)Ansible
+4)Salt stack
+
+All the above do the same job, there will be differences in the process in which the task is done
+
+Among all the configuration tools from above, Ansible is the most popular one.
+
+Lets say there are 4 servers and we have to install Javaon all 4 of them. The general process is to SSH each server and install the software.
+
+Generally, each server has its own IP address.
+
+Now instead of manually updating the installation on each server separately, we can write a script "install java" in .YAML file. Similarly we will write
+
+the script to uninstall. Inside the .YAML installation and uninstallation files, we will give the ip addresses on which whatever task has to be performed.
+
+We can continue to add the requirements by giving the ip addresses. So, the same command or instruction applies on all the IP adderesses at a single go.
+
+So, the benefit of this type of management is there is no need to login to each server and do the installation manually which also reduces the human error.
+
+This is also called as "Infrastructre as a CODE".
+
+The main difference between Ansible and Chef is as below.
+
+Ansible is agentless configuration management
+
+Chef is Agent based.
+
+In Ansible we dont have to run any agent or softwares on nodes. But in Chef, we have to install and make sure chef client is running in every node.
+
+Ansible is push based mechanism. This means there is no need to install agent and server itself updates the nodes whenever there are changes.
+
+Whereas Chef is Pull based. This means Agent checks server for any changes to be implemented.
+
+Ansible carries an inbuilt SSH whereas Chef doesnt have an inbuilt SSH.
+
+Ansible is implemented using playbooks in YAML format. Chef is implemented using Cookbooks.
+
+Ansible is written in Python and Chef is written in Ruby.
+
+Ansible terminology:
+
+Ansible host --> the machine where ansible is installed and ansible playbook is running
+
+Ansible nodes --> all the other machines on which ansible performs operations.
+
+Inventory file --> the file where IP addresses are written. It is also called as host file.
+
+Scripts that we write are called playbooks.
+
+Inside polaybook we will have Tasks, Modules, Roles.
+
+Ansible Galaxy --> Aansible playbook are stored in Ansible galaxy.
+
+Ansible configuration file --> all the details of the ansible setup 
+
+To understand ansible in a better way we need 3 hosts. First is the ansible host and the other 2 are nodes/slaves.(make sure it is ami2)
+
+Then we install ansible using the command sudo yum amazon-linux-extras install ansible2.
+
+ansible --version gives the version installed ..it gets installed in /etc/ansible/ansible.cfg
+
+we can see that initially, ansible hosts file remains filled with some default data. Generally, as discussed above it should be containing the IP addresses
+
+of the machines on which we will be performing the actions. We can completely remnove all the data from the hosts file.
+
+ansible.conf file contains lot of default info with information related to settings.
+
+To begin the ansible implementation open the hosts file and edit its contents.We can create 2 sections like [server] [node] and keep server private ip
+
+and nodes private ip addresses in it.
+
+Now to check whether the server and nodes are able to get connected, we need use the "ping" module
+
+We use the ping module by tyoing the command ansible -m ping node, ansible -m ping server ansible -m ping all
+
+But we will see the problem of permission denied when we do this as ssh client communication wont be established without the .pem key
+
+So to establish the connection, we can a create a new .pem key folder in vi editor in the same path, copy the contents of the .pem key from the server
+
+that is present in our windows local machine and paste it in our new txt file.Later on, we can try pinging again by using the following command.
+
+(Make sure you create the .pem file using the sudo permissions).
+
+ansible -m ping -u ec2-user --privatekey <key> server/node/all .The key here is the one which we used to connect to our server.
+
+But, with the above type of instructions, we will see a python interpreter warning. This happens even after a succesful pong in repsonse to our
+
+ping to the server from the ec2 machine. The same information can be found from the website https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html
+
+Here we will see that the inbterpreter name expected is ansible_python_interpretern and the value it needs is the python path where it got installed in our
+
+machine.This can also be be found using the command whereis python.
+
+Set the python interpreter name and value inside the hosts (inventory file) for all the three machines (i.e one server and 2 nodes). has to be given.
+
+If we set the value in this way and run the instruction again, we wont be seeing the python interpreter warning message.
+
+But, if we check carefully, the command ansible -m ping -u ec2-user --private-key=<keyname> server is actually exposing username and key in the command directly.
+
+To avoid this we can set these values directly inside the hosts file using the parameter 
+
+ansible_user =ec2-user, ansible_ssh_private_key_file=<key_name> after we do this we can directly use the command ansible -m ping all and it directly pings all the machines succesfully.
+
+But, with this kind of approach, the hosts file gets really messy .So , we can create a new section called [all:vars] and put all the parameters with their 
+
+respective values on top of the file .Then we can remove the repetition of these instruction within the file to ensure the file is not messy.
+
+Ansible Adhoc commands:
+
+Adhoc commands dont get stored in any file. They are simply used for onetime execution
+Adhoc commands work on many modules.
+
+We can check the total modules in ansible using ansible module documentation.
+
+Some examples are :
+
+ping
+
+command
+
+shell
+
+service
+
+copy
+
+file
+
+as we have already seen ansible -m ping all ---> will ping all the machines.
+
+ansible -m ping server/node/group name --> will ping the particular group
+
+ansible -m ping ipadress --> will ping the particular ip
+
+ansible -m ping 172.128.x.x ** --> will ping the nodes with that particular ip addresses.
+
+ansible -m ping !:<ip_address> all ---> all ip addresses in the group are executed except the one beside ! mark.
+
+
+Copy module:
+
+Basically if we want to copy some files from one machine to another we use copy module.
+
+Every module containes some parameters .These are options that are needed to work with modules.
+
+For example, in copy we will use source and destination as parameters.
+
+we can check an example of copy by creating a .txt file in our server like shashank.txt and copying it on to all the machines in the node group using below
+
+statements
+
+ansible -m copy -a src='/etc/ansible/shashank.txt dest=/home/ec2-user/shashank.txt' node -- this copies the file shashank.txt on all the ips in the node group
+
+command module:
+
+if we have 100 servers and we want to see disk space or ram info we can use the module command.
+
+ansible -m command -a 'df -kh'all --> this will give the info related to disk free for all the machines
+
+For example if we want to check 2 commands together like diskfree and ram info like df -kh and free .How do we do it with
+
+ansible? we cant use && as in the case of linux using command module. 
+
+If we want to work with multiple opeartors we use shell module.
+
+ansible -m shell -a 'df -kh && free -kh' all
+
+File module:
+
+If we want create a file/directory/change its permissions we use the file module.
+
+In ansible, if we want to create or delete a file or folder we use the file module with "state" argument carrying multiple values to it like absent,directory,file,touch,hard,link
+
+For example, to create a file in our path we use file module along with arguments dest and state. dest is used to create the file in the particular loaction
+
+and state is used describe the action to be performed on that particular file.In this case, it will be 'touch'
+
+so, the command will look like
+
+ansible -m file -a 'dest=<name_of_fle> (gets created in the /home/ec2-user path)  state=touch'
+
+within the file module we can also use a parameter called "mode" to change the permissions of  a file.
+
+ansible -m file -a 'dest=<file_name> mode=<value of the permission>' node
+
+if we want to change the permissions of the file while creating it we can use the following command
+
+ansible -m file -a 'dest=<file_name> state= touch mode=700" node --> this will both create a new file and edit its permission also 
+
+ansible -m file -a 'dest=<name_of_fle> (gets created in the /home/ec2-user path) state=directory' this will create a new directory.
+
+
+ansible -m file -a 'dest=<name_of_fle> state=absent ' this will delete the directoty or the file 
+
+
+lineinfile module:
+
+we use lineinfile module to add data in to an existing file
+ansible -m lineinfile -a 'dest=<file_name> line="hi how are you"' node
+
+
+yum module:
+
+if we are using ami linux we can use "yum" module to install software
+
+the yum module uses argument called "state" which takes values as install,present, absent  which represnt installing (first 2 and uninstalling respectively)
+
+ansible -b -m yum -a "name=httpd state=present" node (-b represents sudo user).
+
+service module:
+
+Even though we install a software using yum module to make sure the service is up and running we use service module.
+
+The service module takes the argument "state" with value restarted reoloaded,started stopped so to start we use started option
+
+ansible -b -m service -a "name=httpd service=started" node
+
+
+In real world instead of adhoc commands we generally write playbook.
+
+Playbook contains set of tasks and modules
+
+For example we want to install httpd, or create a file these are all called tasks. The same playbook can be used multiple times
+
+Playbook syntax is generally written in YAMl format.
+
+Playbook syntax is below (an example of creating a file in ansible playbook)
+
+--- --> it starts with three -
+- hosts: node --> indicates where does the playbook implemenmt
+  tasks: --> indicates the task to be performed (part of the list of tasks )
+  - name: create a file  --> (name of the task)
+    file:  --> module name. even though it contains : it is not exactly a map in ansible context. just represents an ansible module
+      dest=sample.txt ---> name of the file to be created
+	  state=touch   --> state field is used to create the file
+
+Connect the three servers and write the above yaml file in the /etc/ansible path of the  master server .
+
+Then we can run the playbook using the below command.
+
+ansible-playbook.<palybook.yml_file> is the command to run the playbook
+before running the playbook we can also check its syntax by using the below command
+
+ansible-playbook <playbook.yaml> file --syntaxcheck
+
+
+
+similarly we can write multiple plays (tasks) inside a playbook using nultiple tasks field
+
+---
+- hosts: node
+   tasks:
+   - name: create a file
+	 file:
+		dest=shashank.txt
+		state=touch
+   - name: create a directory
+	 file:
+	   dest=devops
+	   state=directory
+   - name: change mode
+	  mode:
+	  dest=shashank.txt
+	  mode: 0400 (pleasenote that in ansible mode module has to be set in "octal mode" only)
+
+Now, to write content inside file we need to use the copy module and it contains parameter called content to which we can set up a | pipe symbol
+
+so the yaml file looks like
+
+---
+
+- hosts:node
+  tasks:
+  - name:create a file
+    file:
+	  dest=file.txt
+	  state=touch
+  - name create a directory
+    file:
+	dest=my_dir
+	state=directory
+  -name: copy content
+   copy:
+    dest=file1.txt
+	content= |
+	   <content>
+	   <content>
+	   <content>
+
+Now, the next scenario is to create multiple files 
+
+
+---
+- hosts:node
+  tasks:
+  - name:create a file
+    file:
+	  dest=file.txt
+	  state=touch
+ - name:create a file
+    file:
+	  dest=file1.txt
+	  state=touch
+ - name:create a file
+    file:
+	  dest=file2.txt
+	  state=touch
+ - name:create a file
+    file:
+	  dest=file3.txt
+	  state=touch
+	  
+The above yaml file works perfectly with out any issues. But, we have created duplication of items. 
+
+So, to remove this problem we use loops  using item and with_items keywords. the keyword path contains the value item inside a flower bracket
+
+where as with_items is a list , showing all the required files that have to created in a looped manner.
+
+The path keyword just checks if the file required is present in the path (by substituting it with item) and then inside the with_items section
+
+files are evaluated one by one.All the other actions are also executed one by one.
+to see thesyntax:
+
+---
+- hosts: node
+  tasks:
+  - name:create a file
+    file:
+      path: "{{item}}"
+	  state:touch
+	  mode: 400
+	with_items:
+	  file1.txt
+	  file2.txt
+	  file3.txt
+	  file4.txt
+------
+
+So, how to install git software on all the nodes.
+
+If we dont have a configuration management we have to install git individually on each seerver.
+
+Using configuration management , we can install using a single command. Generally playbook looks like below
+
+---
+- hosts: node
+  become: true
+  tasks:
+  - name: install git 
+    yum:
+	 name: git
+	 state: present
+
+With the single above playbook we will be to install git on all the available nodes.
+
+Please note that we can also mix and match the type of amazon machines while executing an ansible playbook.
+
+But, for this to happen, we haev to update the inventory (hosts) file with the ubuntu environment variables in the [ubuntu:vars] section.
+
+this includes user as ubuntu , key of the ubuntu ec2 machine ,path of python  and also add unode IP address.
+
+We also need to write a separate ansible-playbook for ubuntu machine .Please remember that the module name that ubuntu uses in APT but not YUM.
+
+now to check a scenario where we have to uninstall git from the above playbook
+
+---
+- hosts: node
+  become: true
+  tasks:
+  - name: install git 
+    yum:
+	 name: git
+	 state: present
+  - name: uninstall git
+    yum:
+	 name: git
+	 state: absent
+
+when we run the above playbook it will perform botht the tasks. In case if we already had git in our machine,it will try to install it again.
+
+But, in this case ansible provides us an option wehere we can run only the required tasks and skip the others depending on our choice.
+
+This is done using the concept of tags . We can write a separate section in ansible playbook using the keyword ansible like below.
+
+Please note the every task can be mapped to a specific tag and we can mention whether to install or uninstall
+
+
+---
+- hosts: node
+  become: true
+  tasks:
+  - name: install git 
+    yum:
+	 name: git
+	 state: present
+    tags:
+	 install
+  - name: uninstall git
+    yum:
+	 name: git
+	 state: absent
+	tags:
+	 uninstall
+
+this can then be implemented while running the ansible playbook using the command
+
+ansible-playbook <play_book.yaml> --tags <tag_name>. With this, we can only perform the tasks (internally module)  that are tagged to a particular tag.
+
+Install Maven :
+
+To install maven , we can use ther below playbook and install it.
+---
+- hosts: node
+  become: true
+  tasks:
+  - name: install maven
+    yum:
+	 name: maven
+	 state: present
+
+Ansible Galaxy:
+
+Just like git, docker have githubs and docker hub ansible has ansible galaxy.
+
+Ansible galaxy we can see system level playbook, development playbook and all other varieties of playbooks.
+
+We have to see Ansible role details. Through ansible role we wrtie ansible playbook in real time.
+
+In real time, when we have multiple servers with various requirements. Like installing git,maven,java in one then just git on another after that we have 
+
+machine where we need to install git maven java and then uninstall one of them. Clearly with whatever we have learned so far,we have to wrtie multiple palybooks
+
+where repeated actions would be performed.
+
+Instead of doing it  we will first create roles like git,maven,nginx etc. Then in the playbook that we write we just mention the role name in the place of the
+
+tasks that we wish to perform. In this way, only that particulr role will be implemented. Additionally, we will write separate playbooks for each of the required
+
+software and we will keep the needed steps inside them. So, when we actually run the playbook having our role name in it we will implement the playbooks of the softwares
+
+that are essential to be installed.
+
+So, example playbook with roles of git,maven,java looks like below
+
+----
+- hosts: node
+  roles:
+   -git
+   -maven
+   -java
+   
+So, when we create a role it internally contains many folders like tasks,variables,files,handlers,templates each containing all the important data
+
+or dependencies that are required for an ansible role to work correctly.
+
+So, a "ROLE" can be defined as a complete unit  of automation that can be reused and shared.
+
+
+So, when role is created a default folder structre is created.
+
+files
+
+templates
+
+vars
+  (contains main.yaml)
+meta
+  contains main.yaml)
+handlers
+  (contains main.yaml)
+tasks
+  (contains main.yaml)
+default
+  (contains main.yaml)
+
+So, how to create a role?
+
+To create a role the command used is ansible-galxy init <role_name> , so for git it will be ansible-galaxy init git.
+
+From the above discussion, we can confirm that main.yaml file that is inside the tasks folder is the folder where our code first starts to work on after we create role.
+
+so, to summarize the code we need to do as below.
+
+create a root in /etc/ansible folder using the command ansible-galaxy init git
+
+inside the hosts/inventory file.
+
+
+update the ip address of the ubuntu instance (create one if not exisitng) and update its dependecies
+
+in the main.yaml file of the tasks folder, update the code as below
+
+---
+ apt:
+  name=instll git
+  state=present
+
+along with this,in the main root folder (i.e./ansible/etc) ,create a new yaml file and update as below
+
+---
+- hosts: unode
+  become: true
+   roles:
+    git
+	
+In the above process we run the yaml file which is present in the /etc/anisble. As noted above it just contains the folder with the role name.
+
+So, that role folder inside /tasks folder is called which contains main.yaml file, in which we have already written the tasks (i.e the script needed to
+
+install the required software ,in this case GIT).
+
+Also, in the inventory file,dont forget to update the details of the new ec2 server.
+
+The key point to note here is that, in main.yml file inside the tasks folder of git role folder, we only update the module and its name and state.
+
+The other yaml file which we create outside in the ansible root folder we mention hosts: unode, give root permissions and also metntion the role name using roles option.
+
+
+Apache tomcat in ansible:
+
+Pre requisities to install apach tomcat are:
+
+install jdk
+tar tomcat
+untar tomcat
+modify tomcat-users.xml
+modify context.xml
+copy the war file in to web apps
+start the tomcat service
+
+So, we need to install all of the above first to start the process of tomcat installation using ansible.
+
+So, first create a role called TOMCAT and go in to TASKS folder which contains main.yaml file.
+
+inside the main.yaml file, we can start writing as
+
+---
+- name: install tomcat
+  command: wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.tar.gz
+  args:
+   chdir: /tmp/
+- name: install jdk
+  yum:
+   name: "{{item}}"
+   state: present
+   with_items:
+  - java-1.8.0-openjdk
+- name: Extract tomcat version
+  command : tar zxvf /tmp/apache-tomcat-9.0.65.tar.gz -C /opt/ 
+  creates: /opt/apache-tomcat-9.0.65
+- name: copy war in to web app
+  copy:
+   src: /etc/ansible.sample.war
+   dest: /opt/apache-tomcat-9.0.65/webapps/sample.war
+- name: start tomcat service
+  command: nohup /opt/apache-tomcat-9.0.65/bin/startup.sh &
+  
+After we finish writing the above code in main.yaml file of the tasks folder, we should write another yaml file in the tasks folder section
+
+this should contain the followinjg information
+
+---
+- hosts: node
+  become: true
+  roles:
+   tomcat
+
+After the playbook runs successfully tomcat is installed on the nodes.We have to change 2 files i.e tomcat-users.xml and context.xml located
+
+in conf and web app folders respectively yo make sure we give the tomcat credentials for logging in.
+
+content to be written in tomcat-users.xml  -->please note this content only has to be added but not edited or changed in any way.
+<role rolename="admin"/> 
+<role rolename="admin-gui"/> 
+<role rolename="admin-script"/> 
+<role rolename="manager"/> 
+<role rolename="manager-gui"/> 
+<role rolename="manager-script"/> 
+<role rolename="manager-jmx"/> 
+<role rolename="manager-status"/> 
+<user name="admin" password="admin" roles="admin,manager,admin-gui,adminscript,manager-gui,manager-script,manager-jmx,manager-status" />
+
+In this way we can install tomcat on to different nodes using ansible.
+
+Install Nginx with custom page:
+
+Connect the instances and create an index.html page.
+
+we can enter the following content in it
+<html>
+<h1> this is my page</h1>
+</html>
+
+We have to enable the 80 port in the inbound rules of ourt security group for all the nodes as nginx runs on 80 port.
+
+then please create a install_nginx.yml file like below
+
+---
+- name: install nginx
+  hosts: node
+  become: true
+  tasks:
+    - name: installing nginx
+      command: amazon-linux-extras install nginx -y
+      args:
+        creates: /sbin/nginx
+    - name: copy the index.html file
+      template:
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+    - name: start nginx service
+      service:
+        name: nginx
+        state: started
+
+ Please note that we have command,template and service modules in the above code. Command keyword to implement the command to install nginx,
+ 
+ template module to copy our customized index.html in nginx instead of the default one and finally service module to start the nginx service.
+ 
+ With this we can see our webpoage loading on our EC2 instances.
+ 
+ But, consider a scenario where we have made a change to our index.html file. If we re run the playbook we will observe that restart  step  (restarting the service)
+ is again executed (in fact all tasks get executed again). This is fine and expected. But the same behaviour is observed even in the case when there are no apparent changes to the code.
+ 
+ So, to avoid this situation of redoing tasks ,ansible uses concept called "handlers". Handlers are tasks only run when notified .Each handler has a global 
+ unique name.
+ 
+ so, the ansible playbook looks like below.
+ 
+ 
+ ---
+- name: install nginx
+  hosts: node
+  become: true
+  tasks:
+    - name: installing nginx
+      command: amazon-linux-extras install nginx -y
+      args:
+        creates: /sbin/nginx
+    - name: copy the index.html file
+      template:
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+	  notify:
+	   - Restart nginx
+	  ignore error: yes
+    - name: start nginx service
+      service:
+        name: nginx
+        state: started
+   handlers:
+    - name:Restart nginx
+	  service:
+	   name: nginx
+	   state: restarted
+ 
+ So, the trick lies with the keyword notify where we mention the handler name . Handler internally works like a task again.
+ 
+ So, handler task is written separately inside which we mention its name (the same name which we will give in notify section) use service module again  and give the name and also status as restarted.
+ 
+ We can also use the option ignore errors: yes to skip the execution getting stopped at tasks that cause errors. In this way, we can continue to see the code 
+ 
+ getting executed with out breaking .
+ 
+ To protect our playbook we use ansible vault. With this we can  protect our sensitive data.
+ 
+ If we have to create an file ansible vault the command is
+ 
+ ansible-vault create <file_name.txt> it asks for pwd, which we can  set.Once this is set every next time anyone tries to open this file.
+ 
+ it asks for the password without which it cant be openend. To view the file that has been created with ansible vault the command needed is
+ 
+ ansile-vault view <filename.txt> and to edit it the command is ansible-vault edit <filename.txt>
+ 
+ if the file is already existing and then we want to protect it we need to use the command ansible-vault encrypt <filename.txt>, It asks for pwd,
+ 
+ we can set pwd and encrypt.
+ 
+ ansible-vault decrypt filename.txt will decrypt the file and can be viewed normnally
+ 
+ if we want to change the password we can use the command ansible-vault rekey filename.txt and the  setup a new password.
+ 
+ to run a playbook that is encrypted using the ansible vault we have to run the command ansible-playbook --ask-vault <playbook_name>.yml
+ 
+ which will ask us to enter the password. Once we enter the required password, we will be able to run the playbook.
+ 
+ Passwor dless authentication:
+ 
+ To setup a passwordless authentication (connecting a user from one server to another machine)
+ 
+ Once we login to a machine we create a user. Now if we want this user to get connected to another machine that too without password 
+ 
+ we create a private and public keys using the ssh-keygen command.
+ 
+From the above generated public key, we copy the content and then we login to the second machine using the same username.
+
+Once we login to the second mnachinen we go Inside the .ssh folder and create authorize_keys folder where we will be copying the public key of the first machine.
+
+Once we do this we can then login to second machine from the first one using the command ssh@<username> <ip_address of second machine> with out the need of privater key.
+
+Also if the server has a password we can connect to the server using the command ansible -m ping --ask-pass <node> (--ask-pass command prompts us to give the required password).
+
+
+ 
+ 
+ 
+ 
+
+ 
+   
+  
+ 
+ 
+ 
+ 
+  
+ 
+  
+  
+
+   
+
+
+
+
+
+
+
+  
 
 
 
