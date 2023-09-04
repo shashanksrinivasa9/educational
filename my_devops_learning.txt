@@ -9,13 +9,10 @@ uname ---> The uname is a command line tool most commonly used to determine the 
 cat /etc/osrelease
 curl curl is a command-line tool to transfer data to or from a server, using any of the supported protocols (HTTP, FTP, IMAP, POP3, SCP, SFTP, SMTP, TFTP, TELNET, LDAP, or FILE). curl is powered by Libcurl. This tool is preferred for automation since it is designed to work without user interaction. curl can transfer multiple files at once. 
 Syntax:  
-
 curl [options] [URL...]
 URL: The most basic use of curl is typing the command followed by the URL.  
-
 curl https://www.geeksforgeeks.org
 This should display the content of the URL on the terminal. The URL syntax is protocol dependent and multiple URLs can be written as sets like: 
-
 wget ---> file downloader ,non-interactive(meaning can work when the user is offline )
 mv source_file destination file <command to rename a file.>
 adduser <username> creates a new user in the linux file system.
@@ -25,9 +22,7 @@ ln -s <file1> <file2> --> this is the command to create soft link of file1 as fi
 su <username> is used to switch the user in the terminal
 netstat -plnt is the command to check if a service is up and running or not.
 ps -ef <command to check what processes are running>
-
 useradd -d /home/ansi -m ansi ---> to create a user.
-
 passd <password_name> to create a password for the user 
 
 
@@ -2862,7 +2857,7 @@ then please create a install_nginx.yml file like below
  
  which will ask us to enter the password. Once we enter the required password, we will be able to run the playbook.
  
- Passwor dless authentication:
+ Passwordless authentication:
  
  To setup a passwordless authentication (connecting a user from one server to another machine)
  
@@ -2879,16 +2874,229 @@ Once we do this we can then login to second machine from the first one using the
 Also if the server has a password we can connect to the server using the command ansible -m ping --ask-pass <node> (--ask-pass command prompts us to give the required password).
 
 
- 
- 
- 
- 
+Monitoring Tools:
 
+Once we run an application , to check its status we need to check log files.
+
+If we have one machine , we will directly go the machine and check logs.
+
+But, if we have 100s of machine with different applications we can monitor all the important things like cpu memory,full memory, application down
+
+we have a centralized dashboard from where we can check all the issues together.
+
+The tools that are used in market for this purpose are:
+zabbix
+nagios
+grafana
+prometheus
+elk (elasticsearch logstash kibana)
+datadog
+appdynamics
+splunk
+dynatrace
+aws cloud watch
+
+We can check all the devops tools together in a devops periodic table @  https://digital.ai/learn/devops-periodic-table/
+
+How does the monitoring tools work:
+
+Suppose we have a zabbix server and linux server.Linux server sends logs to zabbix server and then we send a query like we do in SQL to check 
+
+a specify data is shown and then we create a dashboard and we can see all the details in that dashboard.
+
+To get this done, we need to install "agents" in the linux servers. Also we have to configure the server details (ip address ) has to be given.
+
+Now, once the logs are copied from the linux servers to the monitoring tools server in the monitoring tools server we can query the data and we can setup
+
+dashboard for the same. Also, if the data value exceeds the threshold we can also receive the notification alert.
+
+But in prometheus and grafana we will have pro/grafana servers and linux servers with agents too.
+
+In these 2 monitoring systems, the process follows a pull based mechanism. Where we will have the details of the agents configured in the prometheus server
+
+So, the prometheus server works on pull based mechanism instead of push based mechanism.
+
+Prometheus basically can be termed as a data model (time based) where data is identified by using metrics and keyvalue pairs.
+Promql is the language used for this functionality.
+
+
+To setup a prometheus monitoring machine set up an ec2 instance in aws. Then we connect the EC2 instance and download the prometheus software
+
+using the command curl -OL https://github.com/prometheus/prometheus/releases/download/v2.47.0-rc.0/prometheus-2.47.0-rc.0.linux-amd64.tar.gz
+
+we can then extract it using the command tar -xvzf prometheus-2.47.0-rc.0.linux-amd64.tar.gz
+
+Once we extract the zipped folder we need to go in to the prometheus folder prometheus-2.47.0-rc.0.linux-amd64  and and we will observe a .yaml file 
+
+named prometheus.yml
+
+What we observe is as below.
+
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:9090"]
+
+The sections of the above file can be described as below:
+
+alerting:
+
+alertmanagers: This section specifies the Alertmanager instances that Prometheus will communicate with. In your configuration, there is one Alertmanager instance defined.
+static_configs: This is a configuration section that specifies static targets for Alertmanager instances. The targets field inside static_configs should contain the address (hostname and port) of the Alertmanager instance. However, in your example, the targets field is commented out (indicated by the # symbol), so it's not specifying any specific targets. You should uncomment this section and provide the actual address of your Alertmanager instance.
+rule_files:
+
+This section allows you to specify rule files that contain alerting rules for Alertmanager to evaluate. Alerting rules define conditions for generating alerts based on Prometheus metrics.
+In your configuration, two rule files are listed but are also commented out (indicated by the # symbol). You can uncomment these lines and specify the actual paths to your alerting rule files. These rule files contain the conditions and actions to be taken when specific conditions are met.
+scrape_configs: This is a top-level section in the Prometheus configuration file where you define the scrape configurations for different jobs.
+
+- job_name: "prometheus": This is a job configuration section for a job named "prometheus." Each job represents a set of targets that share the same configuration.
+
+static_configs: This section specifies the list of static targets that Prometheus should scrape for metrics data.
+
+- targets: ["localhost:9090"]: Within the static_configs section, you define the targets by specifying their addresses. In this case, you have one target specified, which is "localhost:9090". This means that Prometheus will scrape metrics from a Prometheus instance running on the local machine at port 9090.
  
+ 
+But, in the very first attempt we dont change any of the content from above and we copy and paste the prometheus IP address with its service port number.Remember that prometheus runs on port 9090. 
+
+Similarly if we do http://13.57.229.83:9090/metrics we get the data of all the metrics (end points) the prometheus is configured for us.
+
+Also in the main prometheus page, we can see the specific metric's data by enetering its name in search bar and clicking exectue .We are basically
+
+executing promql commands to get the output in both tabular form and graphical representation.
+
+Node exporter:
+
+What is an exporter. 
+
+To monitor anything on a server by prometheus some one has to send that data to prom. This is done by agent , it is called as "Exporter"
+
+This exporters send details about the data in the servers.Example of this include linux instance metric (CPU, RAM,Network i/p and O/p, Processes running etc).
+
+So, all linux machines can be monitored by using node exporter (jenkins, tomcat,nginx). Node exporters are of many types like Database,Hardware related, http ,api kind of exporters.
+
+To check the working of node exporter install node exporter in our prom sever. Please note that node exporter runs on 9100 port.
+
+Our prom server can also be monitored by agents or node exporters . To do this, after installing node exporter on our machine, we can go to 
+
+prometheus.yml file and in  scrape config section we keep the target as localhost:9100 by adding a new job under static config section. 
+
+Remember that each static config section under scrape config section represents a new job. Inside this sections we give our target IP addresses.
+
+This means we are informing the prom to monitor itself on 9100 server by adding a new job.
+ 
+9100 port.
+
+Install a noden exporter using the wget command and wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+
+once it is downloaded we need to extract it using tar -xvzf node_exporter-1.6.1.linux-amd64.tar.gz
+
+This will download nodeexporter along with supporting files\
+
+We need to go to the node exporter folder and run it using ./node_exporter executable. We can see that node exporter runs on 9100 port.
+
+Inside this port we can see metrics link also.
+
+But in our main prometheus service page inside the targets link only one node is running.Which is not the node exporteer but just a plain prometheus server data metrics.
+
+Now to see the data metrics of the node exporter also,we need to add the data(ip address) related to that particular node in the prometheus.yml file.
+
+Basically, we need to add a new job related to this particular node in the config section.
+
+That will basically look like below.
+
+- job_name: "node_exporter"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:9100"]
+
+Once we make this change in prometheus.yml file we will be able to see node metrics also in the prometheus page.
+
+We can then see the data metrics usingn the queries present in the prometheus UI.
+
+There are also multiple prometheus functions. like rate(),irate() etc.
+
+Now, what we have observed so far is we have montired the same prometheus server normally and through node exporter 
+
+But what to do if we want to monitor a machine that is not our prom server?
+
+For this purpose also, we use a separate server, download the node exporter. After that, we return back to our prometheus server
+
+and then in the prometheus.yml file inside the scrape_config and static_config section we add then new machine's IP address in a sepearte job.
+
+the configuration would like below for this.
+
+- job_name: "server"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["18.144.40.216:9100"]
+	  
+With this arrangement we will be able to see the metrics of all the data metrics in a single graph.
+
+But,with the above arrangement we will be seeing separate graphs for each of the nodes separately. If we want  the graphs to be tied to a single node, inside the proemtheus.yml file, we can set up the scarpe_config and static_config sections we can put in all the ip addresses in a single target node.
+
+With prometheus option above, we dont have the option to store all the graphs, metrics and other data . To do this job we need to make use of Grafana. Grafana is a centralized monitoring tool where we can see the data metircs of all the tools in a single place.
+
+Data from prom is given to Grafana. It is a monitoring dash board tool.
+
+We download grafana by starting a new instance.
+
+We need to download it and unzip it using the tar command
+wget https://dl.grafana.com/enterprise/release/grafana-enterprise-10.1.1.linux-amd64.tar.gz
+tar -zxvf grafana-enterprise-10.1.1.linux-amd64.tar.gz
    
-  
- 
- 
+Please note that grafana runs on 3000 port . It has to be started by going in to the bin folder and with command ./grafana-server web.
+
+We can then open the grafana webpage and in port 3000 in our server ans set up a basic password (as admin and admin).
+
+From the grafana webpage, we can go to the Datasources section and then select prometheus. Or we can choose the dashboard and give prometheus as the
+
+data source.
+
+Then we can enter the queries for all the nodes in the network and check the graphs in the grafana dashboard.
+
+Grafana also provides default template to get all the queries . We can check them in grafana template variable webpage We can select the required
+
+variable's .json file (provided with ID), download it in our machine and then in the grafana UI we can import it in to the dashboard.
+
+Generally the metrics available for the node exporter variable are :
+
+CPU usage, Memory usage, Network Received,Network transmitted,Disk I/O, Disk Space usage etc.
+
+We can also setuop an alerting mechanism by setting up a threshold value  for a particular metric and give our email ID in alert notifications.
+
+Biut we also need to do e-mail setting in both gmail settings and also in sample.ni in conf folder.
+
+
  
  
   
