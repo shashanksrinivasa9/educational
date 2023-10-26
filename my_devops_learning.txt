@@ -1,4 +1,4 @@
-Some Basic Linux commands:
+ Some Basic Linux commands:
 
 free --> The free command gives information about used and unused memory usage and swap memory of a system
 top ---> The “top” command provides a dynamic real-time view of a running system.
@@ -294,7 +294,7 @@ to install jenkins in AMI linux machine :
 sudo yum install jenkins -y
 
 to check whether jenkins is running or not in an AMI linux machine we use the command
-
+sudo  jenkins service status
 some basic jobs in jenkins that we see are:
 
 print hello message
@@ -348,7 +348,7 @@ to create poll scm in configure page of a jenkins job, in the build triggers sec
 if the job is for periodical do the same but select build periodically
 
 however to select a webhook there is no need to create a cron job .instead select webhook option in the jenkins job page build trigger section
-in the git page of the project select webhook option and copy and paste the jenkins url link followed by /github-webhook.this we will get inside
+and then in the git page of the project select webhook option and copy and paste the jenkins url link followed by /github-webhook.this we will get inside
 the specific repo setting but not the overall repo.
 
 Maven:
@@ -2226,7 +2226,7 @@ Ansible Galaxy --> Aansible playbook are stored in Ansible galaxy.
 
 Ansible configuration file --> all the details of the ansible setup 
 
-To understand ansible in a better way we need 3 hosts. First is the ansible host and the other 2 are nodes/slaves.(make sure it is ami2)
+To understand ansible in a better way we need 3 ec2 instances. First is the ansible host and the other 2 are nodes/slaves.(make sure it is ami2)
 
 Then we install ansible using the command sudo yum amazon-linux-extras install ansible2.
 
@@ -2234,7 +2234,7 @@ ansible --version gives the version installed ..it gets installed in /etc/ansibl
 
 we can see that initially, ansible hosts file remains filled with some default data. Generally, as discussed above it should be containing the IP addresses
 
-of the machines on which we will be performing the actions. We can completely remnove all the data from the hosts file.
+of the machines on which we will be performing the actions. We can completely remove all the data from the hosts file.
 
 ansible.conf file contains lot of default info with information related to settings.
 
@@ -2244,7 +2244,7 @@ and nodes private ip addresses in it.
 
 Now to check whether the server and nodes are able to get connected, we need use the "ping" module
 
-We use the ping module by tyoing the command ansible -m ping node, ansible -m ping server ansible -m ping all
+We use the ping module by using the command ansible -m ping node, ansible -m ping server ansible -m ping all
 
 But we will see the problem of permission denied when we do this as ssh client communication wont be established without the .pem key
 
@@ -3096,27 +3096,1262 @@ We can also setuop an alerting mechanism by setting up a threshold value  for a 
 
 Biut we also need to do e-mail setting in both gmail settings and also in sample.ni in conf folder.
 
+Kubernetes:
 
- 
- 
-  
- 
-  
-  
+K8s is a container orchestration platform
 
+K8s has UI based dashboard . 
+
+K8s Architecture:
+
+K8s has Master-Slave architecture.
+
+Master: The machine where we install K8s is called Master.
+
+Slave: Machines where agents/node are run are called Slaves.
+
+In master node the components that we have are:
+
+1) Api scheduler
+
+2) ETCD/Cluster store
+
+3) Controller manager
+
+4) Scheduler
+
+The working of master node is as follows.
+
+User writes a .yaml file (includes the details needed for deploying the containers ,how many, where,replica set)
+
+The input is given to api server The input from the YAML file is parsed here. After which this is given to controller manager. Controller manager gives it to ETCD (ETCD or cluster store ) takes the given input and stores all the information inside it.After which scheduler uses this data to assign pods to specific nodes. 
+
+Please note the following functions of each of the components
+
+API Server: Exposes K8s API to outside world. We can post the manifest file and it validates the file and we can then go for deployment of application. Its the brain of the cluster. It is exposed on port 443 .
+
+Controller Manager : Runs control loops regularly to maintain the desired state of the application. It sits in the loop and watches the changes.
+
+
+ETCD/Cluster Store: A key value pair based data base used to store the configuration data whenever there is a creation, modification or deletion of
+resources in the cluster.We need to back up the ETCD carefully
+
+Scheduler: Watches for workload and assign it to the nodes. Resource creation,management node selctor everyting will be taken care by the scheduler.
+
+Master node is also called Control plane.
+
+Node components in K8s Architecture (Slave components):
+
+Kubelet: Checks the state of the container (POD) in the node and updates to the control plane (controller manager). In K8s terminology. container is called as POD. Multiple container can be run inside a POD.Applications run inside a POD . Kubelet is exposed on port 10255
+
+Container Engine (Container run time): The software or the container engine needed for containerizing the applications. Like Docker.
+
+Network Proxy (Kube-Proxy): Its a daemonset. It assgins IP adddress to every POD in the node. It also works as a load balancer.
+
+Kubectl is the CLI to manage the k8s cluster.
+
+Declarative Model and Desired state 
+
+Declrative model ---> Wrting the YAML manifest file to use for the deploying the cluster. Desired state is the requirement on which our application runs.
+
+There is another way called imperative where we simply give commands from the CLI to deploy the cluster.
+
+Manifest file contains the image to use, how many replicas to use, which network to operate and other important things.
+
+K8s uses the manifest file to create the required number of PODs for an app.It then can be also run a control (renconciliation) loop to see if the desired state matches the current state and if there is any change the internal component from kubelet -->controller manager --->scheduler and then back again to node work to create the desired state again.
+
+Please note that generally POD contains the application we want to run. If we have 3 different apps like (front end,back end and data base) we try to put the 3 apps in 3 different PODS so that any problem with any of the PODs doesnt disrupt the other.
+
+Some PODs may contain supporting containers. They are called supporting container or Side car containers.
+
+If you are running multiple containers in a same POD all containers share the same IP address. 
+
+K8s Setup:
+
+To setup K8s we can use
+
+kubeadm---> Cluster
+
+Minikube---> Single machine
+
+EKS -->Elastic kubernetes Service (AWS cloud)
+
+AKE -->Azure Kubernetes engine(Azure cloud)
+
+GKE --> Google cloud k8S engine.
+
+We will see kubeadm for our purpose.
+
+For this reason we will need 1 master and 2 slave nodes. So, we will create new instance.(Ubuntu and medium with 8gb)
+
+sudo apt-get update -y
+
+sudo apt-get insatll -y apt-transport-https ca-certificates curl
+
+Download google cloud public key
+
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/kubernetes-xenial main
+
+sudo apt update
+
+sudo apt-get install -y docker.io
+
+sudo usermod -a -G docker ubuntu
+
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+sudo tee /etc/docker/daemon.json <<EOF
+{
+ "exec-opts":["native.cgroupdriver=systemd"],
+ "log-driver":"json-file",
+ "log-opts":{
+  "max-size":"100m"
+  },
+  "storage-driver":"overlay2"
+}
+EOF
+
+sudo systemctl daemon-reload
+
+sudo systemctl restart docker
+
+sudo systemctl enable docker
+
+Then install required packages.
+
+
+sudo apt -y install vim git curl wget kubelet kubeadm kubectl kubernetes-cni
+
+for the above step take input to resolve error from the page : https://github.com/kubernetes/kubernetes/issues/59959 (rdrgporto commented on Oct 13, 2018)
+
+sudo apt-mark hold kubelet kubeadm kubectl
+vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+Environment="cgroup-driver=systemd/cgroup-driver=cgroupfs"
+kubectl version --client&&kubeadm version
+
+disable swap
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+ 
+Create AMI image for slave (nodes) 
+
+sudo kubeadm init
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubeadm join 172.31.20.75:6443 --token dwcktg.ot3j293w5i7fbkiu \   ---->6443 is the port on which our api server runs
+        --discovery-token-ca-cert-hash sha256:6dfab0355e66b5fb41b7180e9229ee5dfbb3b1861a993e1b46acb9bf02604468
+		
+if we want to create when the above token expires we can use the command: kubeadm token create --print-join-command
+
+kubectl get node --> command to check what all nodes are up and running
    
+kubectl get pods --all-namespaces ---> command to see all the PODs in the cluster (both master and slave) (api scheduler,controller-manager,kube proxy,kubelet,etcd and coredns ..2 pods)
+
+kubectl get ns -->command to check all namespaces by default there are 4 namespace ,default,kube-public,kube-system,kube-node-release
+
+when we do kubectl get pods --all-namespaces --> we see that all cluster components are up except the coredns which is a connectivity component. For this purpose we install a plugin.
+
+kubcetl getpods -n "namespace" will give pods present inside a particular namespace.
+
+by default all master node pods are run inside kube-system namespace.
+
+So, we will install weave cni plugin.
+
+sysctl net.bridge.bridge-nf-call-iptables=1
+
+su ubuntu
+
+export kubever=$(kubectl version | base64 | tr -d '\n')
+
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s-1.11.yaml
+
+kubectl version --->command to check kubectl version
+
+After completing above steps,its time to create the 2 slaves. So, make use of the AMI already we created and launch 2 micro 8 gb instances from AWS console.
+
+Connect both the instances and then give the below command to create kubeadm on both the machines
+
+kubeadm join 172.31.20.75:6443 --token dwcktg.ot3j293w5i7fbkiu \
+        --discovery-token-ca-cert-hash sha256:6dfab0355e66b5fb41b7180e9229ee5dfbb3b1861a993e1b46acb9bf02604468
+
+In K8s there are 4 types of service objects present
+
+1)clusterip 2)NodePort 3) load balancer 4)kubernete-dashboard
+
+Dy default any POD that is deployed is automatically done in default namespace
+
+if we want to see the PODS running in a particular namespace the command to be used is kubectl get pods -n  <namespacename>
+
+Please note that by default all master node PODS will be running in the kube-system Namespace.
+
+To deploy an application we have 2 ways. 
+
+1)Imperative way --> direct command like kubectl create or kubectl run
+
+2) Declarative way --> we need to write YAML file.
+
+The example of imperative way is similar to docker run i.e kubectl run --image=nginx ngix_deploy --port=80 
+
+the above example contains kubcetl run as command then it contains image name, pod name and the port on which the particular POD is sexposed.
+
+the same command can also be used as kubectl create --image=nginx nginx-app --port=80
+
+Please note that we need to open TCP port 6783 and 6783 and 6784 UDP ports in our EC2 instance for the purpose of exposing our service of k8s app.
+
+This in the master node ec2 instance
+
+There are mainly 4 objects or primary resources  in K8s - they are 1)POD 2)Replica set 3) Deploy 4)Service
+
+kubectl describe pod <pod name>--> this command can be used to describe the state of the POD creation with logs.
+
+these 4 are needed to deploy and access applications. There are other objects too which we will use whenever we need.
+
+Out of the 4 objects pod.replicaset and deploy are for creating pod,scaling it up or down and deploying it whereas service is for exposing our
+
+Application to the outside world.
+
+Lets see one by one in detail.
+
+Pod can be deployed using the command kubectl run --image=nginx ngix_deploy --port=80 in an imperative way.But this is not a very efficient way of 
+
+deploying PODs
+
+Another alternative to deploying PODs is through Declarative method .
+
+For deploying using the declarative method,we make use of the manifest file which is a .YAML file. It is also called as manifest file.
+
+example (pod manifest,replicaset manifest,deployment manifest ,service manifest)
+
+The main contents of this manifest file are
+
+API Version ,Kind,Metadata and Spec. 
+
+apiversion ---> indicates the version of the kubernetes api that needs to be used in the manifest .yaml files for the creation of resources.
+
+kind --->depicts what kind of resources we will be creating. (like pod,rs,deploy,svc)
+
+metadata ---> depicts pod name and its labels ..labels are kind of tags
+
+spec --> is the section where we run the containers : so, we give the container name, the image it should run , the port on which the container should run etc.
+
+Please note that indentation is very important in the manifest file. We can give 2 spaces before the start of any inside section within the file.
+
+After writing the above manifest file , we need to supply it to the api server using the kubectl apply -f manifest.yml  example lile
+
+kubectl apply -f pod.yml or kubectl create -f pod.yml
+
+So, the sample manifest file for a Pod creation looks like below.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod
+  labels:
+    zone: prod
+	version: v1
+spec:
+  containers:
+  -  name: hello-ctr
+     image: nigelpoulton/k8sbook:latest
+	 ports:
+	 - containerPort: 8080
+
+If we analyze this manifest file we have to understand the following things clearly.
+
+apiversion --> indicates the kubernetes api that needs to be used
+kind :Pod ---> indicates that we are creating the resource Pod.
+metadata : gives the pod name, its env and version.
+spec: gives the container name, the image from docker hub that will be installed and run on this Pod (in this case it is nigelpoulton/k8sbook:latest) and its containerport.
+
+By default all Pods are deployed in default namespace.
+
+kubectl get pods -o wide --> gives detailed description about specific POD (including its IP address)
+
+similarly we can see a full information of whats happening with the POD by using the kubectl get pods -o yml or kubectl get pods -o json in YAML/JSON format.
+
+This is an output with far more details than just the manifest file that we give. This gives information about both Desired state and Current state of the POD.
+
+In the manifest file that we give to the API server, we only present the desired state but not the current state.
+
+Now to delete a POD we can use the command kubectl delete pod <pod_name> 
+
+Now, the problem with the POD resource is once we delete a POD using the above delete command, it doesnt possess the capability to start itself again.
+
+This will cause a disruption in the desired vs current state of our deployment. To avoid this issue, K8s offers a special resource called as
+
+"Replicaset".Replicaset can therefore be used for "self-healing" and scalability of PODs.
+
+We can setup the manifest file for ReplicaSet resource as below.
+
+Please note the important part of the below content is replicas, matchlabels in the metadata and template sections .
+
+Metadata is for both replicaset resource and Pod. Similarly spec is also common between both the fields.
+
+apiVersion: v1
+kind: replicaset
+metadata:
+  name: hi-replica 
+spec:
+  replicas: 4
+   selector:
+     matchlabels:
+	   app: hi-world
+   template:
+     metadata:
+	   labels:
+	     app: hi-world
+     spec:
+       containers:
+       - name: hello-ctr
+	     image: nigelpoulton/k8sbook:latest 
+	     ports:
+	       containerPort: 8080
+
+With this the total no of replicas (here 4) means 4 PODS will be created under the label hi-world.
+
+We can delete the replica set using the command kubectl delete rs <rs_name>
+
+If we delete the RS, the PODS are also automatically deleted.
+
+To make sure the PODS still remain active even after the RS is deleted we can use the command kubectl delete rs <rs_name> --cascade=orphan
+
+Now, if we want to access our application outside oure cluster we have to make use of a special resource called "Service"
+
+Service resource has 3 types .
+
+1)Cluster IP  --> default  within the cluster
+
+2) Node port --> We can use this to access our PODS outside. But for each application we will need its node IP address  and node port to access.
+
+So, the drawback here is if we have 5 nodes, we will have to use node ip and nodeport Node port are of the range 30000-32267 only .
+
+3) Load Balancer ---> Here we can combine all the nodes together and keep it in a single server and then access it from outside thereby removing the 
+
+issue of having to access each node separately with its node port and node ip address.
 
 
+How does the POD Join to the Service resource.
 
+Every service resource contains labels(Key value pairs like env=prod,app=helloworld), this is placed in the PODs also. Now, whenever a matching between
+the labels of POD happens with the labels of Service object a POD gets joined with the service object.
 
+For example, if there are 4 labels in Service resource,all 4 must be present in the POD resource too for the joining to happen.
 
+But the reverse may always not be true.That means if POD has 4 labels whereas the service object only has 2 ,then it looks if the POD resource has the
+required labels from the service. If a match happens the POD gets joined to the service object.
 
+So, it is very essential for the k8s PODS managed by the replica set matches the labels defined in the service resource template exactly.
 
+We can use the command kubectl get pods -o wide --show-labels command to see all the labels associated with the pod at any stage.
+
+Now let us write the service.yaml file to see the functioning of nginx replicaset .
+
+Replicaset manifest file for ngix can be seen @ https://docker-community-leaders.github.io/dockercommunity/docs/communityleaders/eventhandbooks/kube101/replicaset101/
+
+apiversion: v1
+type: service # Denotes the manifest file is for Service object.
+metadata:
+ name: hi-nginx
+ labels:
+  role: web   # the label with which the service object selects which POD has to be exposed
+spec:
+ type: NodePort # This is the type of port needed to access the application from outside world. By default we see ClusterIP.
+  ports:
+  - port: 8080
+    targetport: 80 # port on which nginx run
+    nodeport: 30001 # port denoting the application in ubuntu ec2 instance.
+	protocol: TCP
+ selector:
+  role: web   # the same label used for selecting the POD to be exposed. This is the same label which we used for creation of PODs in replicaset.
   
+Please note that NodePort requires the IP address range 30000-326767 forn accessing the application.So, please enable them in the EC2 instance security group
+
+Deployment Resource:
+
+Whenever we deploy a POD, we will need a resource to suppoort the version updates or rollbacks of the application we deployed that has to be provided
+
+along with scalability and selfhealing. This task can be acheived using the K8s resource called Deployment. 
+
+In the deployment Object, the most important fields are Max Surge and Max unavailable.
+
+The idea of deployment should be first understood with the concept of Blue-Green deployment.
+
+In the Blue-Green deployment, 2 identical envioronments are maintained ( having same infratstructre,load balancer,databases ). Blue environment is the current (working) state
+of the application wheres Green is the newer (latest version).
+
+The Blue environment contiues to support the production releaes whereas the green environment is used for deploying newer applications and test them for stability.
+
+If the new version works fine in the Green environment then the old environment (Blue ) is removed.This is used for seamless deployment of the application.
+
+However, there is a small switching time delay in this process . To avoid this devops engineers started using Rolling updates.
+
+To use rolling updates we need to Max unavailable and Max surge which are inturn the fields of the resource "Deployment"
+
+Max surge :Is the count of extra number PODs that are created on top of replica set. These new PODs represent the newer version of the application .
+
+Max unavailable: This represents the max number of PODs that can be unavailable during the rolling update time. These are the Old PODs that are phased out
+or terminated during the rolling update period.
+
+The below is the manifest file for deployment service:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: node-app-deploy
+ labels: 
+  name: node-app
+spec:
+ replicas: 4
+ selector:
+  matchLabels:
+   app: node-app
+ minReadySeconds: 10
+ strategy:
+  type: RollingUpdate
+  rollingupdate:
+   maxsurge: 1
+   maxunavailable: 0
+ template:
+  metadata:
+   labels:
+    app: node-app
+  spec:
+   containers:
+   - name: node-web-app
+     image: ybmsr/nodejsapp:v1
+     ports:
+	 - containerPort: 8080
+
+The same structure of manifest files follow here too. It contains apiversion,kind,metadata,spec.
+
+Inside the Spec we contain Strategy,Replicas,Template for POD.
+
+Strategy section contains max unavailable, maxsurge fields and Replica contains the Matching label selector with its name and the total no of replicas to be
+
+created. Within the Template of the POD inside the Spec we contain the matching label again to map to the replicaset label and then name ofn the container and its
+image. It also contains the Port number .
+
+kubectl get deploy -o wide ---> gives the list of the deployments
+
+we can then check kubectl get rs (to see the replicaset of  the deployment)
+
+With the above yaml file, a deployment of version V1 of the specified image is done. But what about deploying version v2 ?.
+
+for this purpose we can use the command:
+
+kubectl set image deploy <deployment_name> <container_name>/<image_name>:newerversion
+
+or we can use command kubectl edit deploy <deployment_name> open the the deployment file for editing.Change the version number and save it.
+
+Once we save and exit the deployment is automatically updated. We can then check the deployment of the PODs via RS using the command
+
+kubcetl get rs -o wide .
+
+We can also use the command watch kubectl get rs -o wide ---> to check for the live behaviour of the cluster w.r.t the deployment status.
+
+This will automatically deploy the PODs on to version v2 of the image and remove the first version from the PODs.
+
+Now, if we try to update version to a number that is not exisiting in the docker hub, we will obviously get the image pull error.
+
+We can use the command kubectl rollout status deployment <deployment_name> to check the status of deployment 
+
+kubectl rollout history deployment <deployment_name> gives us the history of the revisions that were deployed on the RS related to the deployment service.
+
+Now, if we face any issues with the newly deployed version and want to revert back to the working version we can use the command
+
+kubectl rollout undo deployment <deployment_name>
+
+Always remember if we delete replicaset we will delete replicaset and POD together.Whereas if we delete the deployment we will delete deployment,
+
+replicaset and POD together.
+
+Now what to do if we want to scale up or scale down the no of replica in our cluster
+
+we can use the command kubectl scale deployment <deployment|_name> --replicas=<reqd number of replicas>
+
+or we can directly use kubectl edit deployment <deployment_name> and change the no of replicas value according to our requirement.
+
+to restart a deployment we can use kubectl rollout restart deployment <deployment object>.
+
+Namespace:
+
+There are 4 default NS in K8s.
+
+1)Default 2) Kube-public 3)Kube system 4) Kube-node-lease
+
+Namespace is a virtual area in our cluster that is segragated with other Namespaces on the basis of project/work/application/micorservice.
+
+The same environment can be used by multiple users. The Dev/Staging/Pre-prod/Production clusters can be segragted within different namespaces in a
+
+cluster.
+
+kubectl create namespace <name_space_name> -->command to create a namespace.
+
+Or else we can also create a namespace using manifest file. In the manifest file we can give the kind as Namespace.
+
+we can then run a pod from the docker hub using the below command in our particular namespace using the below command.
+
+kubectl run <container_name> --image=<image_from_docker> --namespace=namespace name
+
+Alternatively, we can also mention the kubernetes namespace label inside the metadata of the manifest file and then apply the manifest file by 
+
+giving the kubectl apply -f <manifest_file> command to make the application deploy on to a specific namespace of our choice.
+
+If we want our k8s cluster to overwrite the default namespace with our namespace we can do it using the command
+
+kubectl config set-context --current --namespace=<namespace_name>
+
+Daemon Sets:
+
+Think about application which needs to be run on all the nodes by default within the cluster.
+
+An example we can remember is Noder exporter in all nodes within a promotheus setup. In every node we will need node exporter in
+
+every node and report the logs to prometheus server. In such cases, we will need to install node exporter in every node.
+
+For this to happen we can use Daemon Sets. Daemon set helps user to install APP on all Nodes of a cluster.
+
+Please note that with POD and Replicaset manifest files, we will only be able to create APPS on some randomly selcted Nodes on which we wont be 
+
+having control.However, with deamon set we can deploy our APP on all the Nodes by default.
+
+So,basically we can run a log collection Daemon like Prometheus using Daemonset.
+
+Please note that Kube-Proxy is a default Daemon set that runs on every node which provides the IP address to all the Nodes within the cluster.
+
+Daemon set runs replica on each node of the cluster. If a node is added or deleted the Daemon set will automatically add/delete the POD of the app
+
+accordingly.
+
+Now, we can try deploying Application of Node exporter from Prometheus on both the nodes using Daemon set with the below Manifest file.
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+ name: node-exporter
+ labels:
+  name: node-exporter
+  app: node-exporter
+spec:
+ selector:
+  matchLabels:
+   app: node-exporter
+ template:
+  metadata:
+   labels:
+    app: node-exporter
+  spec:
+   containers:
+   - name: node-exporter
+     image: prom/node-exporter:v0.18.1  # Corrected the image tag separator from ":" to "."
+     ports:
+     - containerPort: 9100
+       hostPort: 9100
+       protocol: TCP
+
+With the above YAML file, automatically 2 PODs get created since we have 2 Nodes running in our cluster.
 
 
+If we want more PODs to be run we should be creating extra Nodes (EC2 instances from AMI of the Master Ec2 instance) and then join the new Node by
+using Kubeadm Command.If we do that, we will be able to create New Pod on the New Node also.
 
+Now, if we want the app to get deployed on a particular Node then we can use the field \ with its value of Disktype as SSD to ensure that 
+
+the APP spins up on that particular Node. This we have to mention in the metadata of the Daemonset manifestfile and match it in the POD section by using the
+
+matchingLabels field.
+
+Jobs and Cron Jobs:
+
+Just like Pod ,Replicaset and Deployment object we have other Resources like Job and CRON job. These 2 are similar to Daemon sets .That means
+
+they will be running on all the nodes. But the difference lies in about the total time they run, and when do the run
+
+Job --> Runs on all the nodes.But the PODs dont get killed on their  own .It has to be killed
+
+Cron Job ---> Run on all nodes .But only at a specifc time.
+
+Completion: The completion field specifies the desired number of successfully completed pods that the Job should run before it is considered successful. Once the specified number of pods have successfully completed (i.e., their main containers have exited with a success status), the Job is considered completed. If this field is not specified, the Job will continue running until all pods have completed, regardless of whether they were successful or not.
+
+Parallelism: The parallelism field defines the maximum number of pods that should be created in parallel to run the Job's tasks. For example, if you set parallelism to 3, the Job controller will ensure that at most three pods are running at any given time to perform the Job's tasks. Once a pod completes its task, another pod will be started until the desired number of completions (defined by completion) is achieved. This field is useful for parallel processing or batch processing where you want to limit the number of concurrent executions.
+
+BackoffLimit: The backoffLimit field specifies the maximum number of times the Job controller should retry running a failed pod. If a pod fails, the Job controller will attempt to restart it up to the number of times specified by backoffLimit. If the backoffLimit is reached and the pod continues to fail, the Job will be considered failed, and no more retries will be attempted. Setting a value of 0 means no retries, and setting it to -1 means an unlimited number of retries.
+
+The basic Manifest file for Job is as below.
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: example-job
+spec:
+  completions: 5          # Number of successful completions required
+  parallelism: 2         # Maximum of 2 pods running in parallel
+  backoffLimit: 3        # Maximum of 3 retries for failed pods
+  template:
+    spec:
+      containers:
+      - name: job-container
+        image: my-image:latest
+        # ... other container configuration ...
+		
+Debugging:
+
+kubectl describe pod <pod_name> --->will give information about a particular pod
+
+kubectl log pod_name -->will give info about live logs kubectl log ---tail <number> -f pod_name -->will print logs for the last few lines as mentioned in number.,
+
+please note that -f is option to see log currently.
+
+We can also get into the POD by using the command : kubectl exec -it <pod_name> --sh
+
+Config Maps and Secrets:
+
+These are 2 other resources in K8s. These are used to add environment variables,access keys,secret keys,port number we use them
+
+Config Map ---> Is used to save the non-sensitive data (Like environment variables)
+
+Secret ---> This will contain the data is the sensitive and which cant be exposed to outside world.
+
+Now configmap object has to be called from the POD also
+
+kubectl get configmap -A --> will list all the configmaps in our cluster.
+
+we can see the kubernetes Configmap and Secret objects in the path /etc/kubernetes/pki
+
+A ConfigMap cannot store data above 1 MiB. If we want to use more than thast we can mount volume.
+
+A config map can be made from a configmap object (yaml file ) directory,file or literal values.We have to then call configmap object from POD.
+
+POD can consume configmaps as Command line arguements, Configuration files in a volume or Environment variables.
+
+Config Map on its own can be created in 3 different ways. 1)Literal 2)From file 3)From directory.
+
+kubectl create configmap  configmap_name command can be used to create the configmap object from any of the above 3 ways.
+
+Please note that the configmap contens are Key-Value pairs or as files. Config map can take both the ways in its manifest file.
+
+The main components of configfile manifest file are APIversion,Kinds,Metadata,data.
+
+Exmaple confgig map is as below.
+
+Once we write the below manifest file we can create config map using kubectl apply -f <manifest_file>
+
+This is creating using configmap using a YAML file.
+
+apiVersion: v1
+Kind: ConfigMap
+metadata:
+ name:configmap-example
+data:
+ system.data.type: "app-name"
+ system.data.name: "https://app-name.com"
+ system.data.url: "app-type-xxx"
+ system.data.value: "3"
+ system.properties.interface:|
+  ui.type=2
+  ui.color1=red
+  ui.color2=green
  
+But,we can also create configmap using directory/files (those directories and files will have key-value pairs).
+
+For this we use a file already present online .We download it and use it for your purpose.
+So, to do it create a new directory.
+
+mkdir <dir_name>
+
+wget https://kubernete.io/examples/configmap/game.properties -O <dir_name>/game.properties
+
+similarly we can download other file also using the below command again.
+
+wget https://kubernete.io/examples/configmap/game.properties -O <dir_name>/ui.properties
+
+This example is downlaoding of 2 files needed for application.
+
+Now, to create a config map object using the directory  we need to run the below command from the terminal.
+
+kubectl create configmap <config_map_name> --from-file=<dir_name> (directory in which our files are located)
+
+Please note that when we create a configmap from manifet file like we see in the above example, the no of data in kubectl describe configmap <configmap_name>
+
+will be equal to the number of key value pairs inside the manifest file. Whereas when we create a config map object using the directory option as shown here
+
+the number of data is equal to the number of files present in the directory that is involved in the making of the config map (please note that if we have any file as data 
+
+the file will be considered as a single data entry.)
+
+we can then use the kubectl create configmap <configmap_name> --from-file=<file_name> also to create configmaps from individual files rather than whole directory.
+
+This is creating configmaps using files and directories.
+
+We can also create configmap from the environment variables.
+
+For this also we downlaod environment variables file from online using the below command.
+
+wget https://kubernetes.io/examples/configmap/game-env-file.properties -O config_map/game-env-file.properties
+
+this contains configuration values inside a file with key value pairs.
+
+we can then create a config map again using the command kubectl create configmsp <configmap_name> --from-env-file=<name of the env variable file downloaded above>
+
+If we create config map using env variable, every key value pair is data.
+
+We can also create configmap from command prompt using the option called --from--literal like below.
+
+
+kubectl create configmap <configmap_name> --from-literal=<key>=<value> --from-literal=<key>=<value>
+
+But, how will we use the created configmap inside our POD.
+
+Lets see that now..
+
+Please understand the flow of tasks while a configmap is being used.
+
+1)Write a manifest file for configmap --->keep the required configuration files in it using the key value pairs
+
+2) Write the POD manifest file where it consumes the data from the configmap. To do this inside the spec section and containers section, we 
+
+write down env(name)--->valueFrom--->configMapKeyRef--> and then name of the configmap and key of the env which we want to use.
+
+3)Then any application code like Python or Shell scripting which uses the data from the POD manifest file for its operation.
+
+Now lets write these files individually
+ 
+
+configmap
+
+apiversion: v1
+kind: ConfigMap
+metadata:
+ name: configmap-new
+data:
+ api-url: https://api-example.com
+ api-key: secretapikey123
+ 
+pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: configmap-new-pod
+spec:
+ containers:
+ - name: my-app-container
+   image: my-app-image:latest
+   env:
+   - name: API_URL
+      valueFrom:
+       configMapKeyRef:
+	    name: my-app-config
+	    key: api-url
+   - name: API_KEY
+      valueFrom:
+       configMapKeyRef:
+	    name: my-app-config
+	    key: api-url
+app.py::
+
+import os
+
+api_url= os.environ.get('API_URL')
+api_key= os.environ.get('API_KEY')
+
+print(f"API URL:{api_url}")
+print(f"API_KEY:{api_key}")
+
+Secrets:
+
+Configmap only contains non-sensitive data. But to store the sensitive data we use the resource object "Secret"
+
+Secret generally contains Username and Password.
+
+Secret can be passed and environment variable or pass the entire file as a volume.
+
+To create a secret object we use the command kubectl create secret creates the secret object.
+
+Whereas the command kubectl get secrets --->fetches all the secret objects present in our cluster.
+
+Now, lets practically see how our secrets are created.
+
+Create 2 files username.txt and password.txt and store them. Now, write 2 files username.txt and password.txt and store some content in it.
+
+We can then create secret using the command kubectl create secret <secret_name> --from-file=first file (username.txt --from-file(password.txt)=secondfile
+
+
+If we create the username and password in this manner, we wont be able to see the details of them when we do kubectl describe secret <secretname> 
+
+The above is the method in which we can create secret object using file method.
+
+
+We can also create it using the environment variable method.
+
+Please note that we can encrypt any content in  linux w.r.t our desired format .For example, we can encrypt content on the command prompt in to base 64 format
+
+For this, we just need to use the command | after our command and give base64 .
+
+example:
+
+echo shashank| base64  ---> will encrypt this data in base64 format.
+
+so we encrypt both our username and password in base 64 format and then we write a manifest file for secret object in the following way,
+
+apiVersion: v1
+kind: Secret
+metadata:
+ name: my-secret
+type: Opaque
+data:  -->please note in secret and configmap objects there will be "data" section but not spec as in case of others.
+ username: <mention the admin name encryptedusing base 64 above>
+ password: <mentu=ion the password encrypted <above>
+ 
+Then we can apply the secret file using kubectl apply -f <manifestfile.yml>
+
+In case we want tom decrypt the data encrytped in the above manner we need to use the command-line
+
+echo "data" | base64 --decode --> this will automatically decrypt our data.
+
+Now, to consume this secret object inside the POD , we need to write another manifest file for POD and then in that file
+we have to mount the secret object's data from the abiove content
+
+we need to write the POD manifest file as below.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-pod
+spec:
+  containers:
+  - name: redis-container
+    image: redis
+    env:
+    - name: SECRET_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: my-secret
+          key: username
+    - name: SECRET_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: my-secret
+          key: password
+
+The above method is consuming secret object in POD using the environment variables.
+
+One Other way is using Volume mounts.(Please check persistent volume and persistent volume claims)
+
+The best use of Configmap and Secret is reusability of code and security respectively. One best example is ECR repo password
+
+can be used to download image from docker hub. The credentials of that ECR repo can be used as Secret resource in our POD manifest file.
+
+Additionally please check below concepts in K8s.
+
+
+sidecar containers init containers
+rbac
+headless user
+pod affinity
+readiness and live probe
+drain the node
+taint and tolerance
+how 2 namespaces communicate
+statefulsets
+
+EKS: 
+
+Elastic Kubernetes Service:
+
+EKS is an aws provided service to create and Manage Kubernetes cluster. Within EKS EKS CLI is the tool to provision our EKS cluster.
+
+So, now lets create an EKS cluster.
+
+1)First step is to launch an EC2 instance name it as EKSCTL
+
+2) Second step is to install AWS CLI we can check it by typing AWS --version in command prompt after installation.
+
+3) Next is to create an AWS user and give him the admin rules from the IAM policies. Please generate access key and secret key as part of the process.
+
+Then we need to configure the user to login to the aws cli using the command AWS Configure. After which we should be giving the region,access key and secret key that 
+
+were generated from the above steps along with the required output format which will be json.
+
+Next step is to install kubectl from the link :https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+
+Select our required version and then just followall the instructions carefully and comoplete the installation process.
+
+As we have already seen above any application running inside our cluster can be accessed within the cluster using the clusterIP.Whereas a user from
+
+outside world wants to access our application, we need to use the service called nodeport and give the node's IP address.
+
+Now, if the number of nodes are more (meaning on each node there is  different application running),then for each application we can create a specific
+
+separate URL and place it inside the Load balancer. The load balancer will then redirect the traffic to respective URL depending on the load.
+
+On top of these, there is another specific set of balancer called "Ingress" .This is used for routing traffic to diferent applications within the cluster 
+
+however, the difference is that instead of a separate URL for each application, Ingress works as a common URL for each of the micro service or application
+
+and redirects the traffic to each of them.
+
+Lets see them one by one.
+
+For this to be understood. Lets install EKSCTL on our machine from the URL: 
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+
+sudo mv /tmp/eksctl /usr/local/bin
+
+after this if we type eksctl -version we should be able to see the installed version of eks
+
+Now we can install the eks cluster using both imperative and declarative way.
+
+Imperative way is to run a command and create entire cluster like eksctl create cluster.
+
+But it is not efficient way in making a reusable option. So, we take decalrative approach.
+
+Declarative way is the approch we take by using the YAML manifest file.This we can obtain directly from web when we type EKSCTL.
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig # kind that has to be specified for the creation of EKS cluster
+metadata:
+ name: basic-cluster
+ region: us-west-1
+ nodeGroups:   # specfies the name of the slave nodes and the total no.of nodes that have to be run.
+ - name: ng-1
+   instanceType: t2.micro
+   desiredCapacity: 2 --> no of nodes that will be created in our Cluster.
+ ssh:
+  publicKeyName: eksctl_key  # the key with which we logged in to our EC2 instance.
+  
+After we finish writing the above code, we can then apply the yaml file using the command
+
+eksctl create cluster -f apply <manifest_file.yml>
+
+This will create lot of components like VPC,Subnet,Route table, NAT gateway and all the things required for our cluster.
+
+So, we just have to be patient and check the updates
+
+Please remember the difference between EKS and ECS. Where EKS is called as elastic kubernetes service  ECS is called as Elastic container service.
+
+EKS is for k8s creation and management ECS is for container services. ECS again has 2 types withn it. One is normal EC2 and other is Fargate (which is server less computing).
+
+After our EKS cluster is ready and installed, we can see our EC2 isntances creates in our AWS account.
+
+We can check the creation of nodes in our machine using the command kubectl get nodes ---> this will give the list of the nodes that were kept
+
+as part of the desired capacity.
+
+Now, lets create a replica set in the kubernetes EKS cluster that we created.
+
+We use the below manifest file for the creation of replicaset in our cluster.
+
+The details are pretty much same as the normal replicaset. In this way we can create 2 replicas of our application running in our cluster.
+apiVersion: apps/v1
+Kind: ReplicaSet
+Metadata:
+ name: hello-web
+spec:
+ replicas: 2
+ selector
+  matchlabels:
+   app: hello-world
+ template:
+  metadata:
+   matchlabels:
+    app: hello-world
+ spec:
+  containers:
+  - name: hello-ctr
+    image: ybmsr/nodejsapp:v1
+    ports:
+    - containerPort: 8080
+	 
+Similar to the replicaset that we created above ,now lets try and create a load balancer. For creating load balancer
+
+we will need create a Service object of type Load balancer .Details are as below.
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-loadbalancer
+  labels:
+    app: hello-world
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30123
+      protocol: TCP
+  selector:
+    app: hello-world
+
+Please note the following points carefully in this load balancer YAML file.
+
+kind is Service
+Inside Spec type is Load Balancer
+Inside the Ports section we have Port,Targetport and Nodeport .Each of them depicting the Port on which the service is accessed within the cluster (Port)
+
+the port on which the service gets forwarded on request (as in POD) and finally the prt on which the service is accessed from outside the cluster (Nodeport).
+
+The above YAML file will create a load balancer which can be oopenend its DNS name and port 8080.
+
+The above load balancer is used to route traffic within the cluster at layer 4 which is network layer and is meant to work on TCP protocols 
+
+However to route application specific traffic within the service of a cluster we will need to configure a load balancer at application layer.
+
+This load balancer is called as "ingress". This load balancer redirects traffic at application layer of the service according to the micro service.
+
+Now, lets look at how ingress works internally.
+
+First let install ingress in our EKS cluster.
+
+use the following commands to do it
+
+cd /tmp
+
+curlm -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3  --> this will install get_helm.sh file 
+
+chmod u+x get_helm.sh--> give permissions
+
+./get_helm.sh ---> this will install the helm
+
+Now what exactly is helm?
+
+Helm is kubernetes package manager for downloading kubernetes objects .This is just like what apt is for ubuntu, yum is centos and pip is for python.
+
+It is a pacakage manager incase of K8s cluster.  It is stored in helm chart musuem.
+
+In chart muesuem we can add all our kubernetes objects.
+
+Now lets take an example of Ingress practically,
+
+For this we will need 2 applications both being exposed to outside world with service object and both being managed by Deployment service.
+
+Please note the manifest YAML file for boththe applications below.
+
+The manifest file looks like below
+
+For first application:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-kubernetes-first
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: hello-kubernetes-first
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-kubernetes-first
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hello-kubernetes-first
+  template:
+    metadata:
+      labels:
+        name: hello-kubernetes-first
+    spec:
+      containers:
+      - name: hello-kubernetes
+        image: paulbouwer/hello-kubernetes:1.8
+        ports:
+        - containerPort: 8080
+
+For second application:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-kubernetes-second
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: hello-kubernetes-second
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-kubernetes-second
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hello-kubernetes-second
+  template:
+    metadata:
+      labels:
+        name: hello-kubernetes-second
+    spec:
+      containers:
+      - name: hello-kubernetes
+        image: paulbouwer/hello-kubernetes:1.8
+        ports:
+        - containerPort: 8080
+
+
+As seen above, in both the above manifest files, Service object is Cluster IP and then Deployment object for basic hello-kubernetes page  is given.
+
+The hello kubernetes page has both first and second applications in it.
+
+Now to check ingress functionality We need to purchase a domain from freenom.com/godaddy.com
+
+Configure DNS routing to our domain in AWS through route 53 by setting up hosted zone. Then this setup gives us Nameservers which we have to 
+
+copy back in the domain nameserver by opening our domain in freenom again. Please make sure to ignore . at the end of the nameservers.
+
+We then save the changes and create a recordset.
+
+let's create an example with two microservices deployed in Kubernetes and configure an Ingress resource to 
+route traffic to them. In this scenario, we have two applications, "app-one" and "app-two," 
+and we want to create an Ingress that routes traffic to these services
+
+Create Manifest Files for Microservices:
+
+Let's start by creating manifest files for the two microservices. Below are simplified deployment and service files for both "app-one" and "app-two.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-one
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-one
+  template:
+    metadata:
+      labels:
+        app: app-one
+    spec:
+      containers:
+      - name: app-one
+        image: your-registry/app-one:latest
+		
+app-one-service.yaml:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-one-service
+spec:
+  selector:
+    app: app-one
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+app-two-deployment.yaml
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-two
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-two
+  template:
+    metadata:
+      labels:
+        app: app-two
+    spec:
+      containers:
+      - name: app-two
+        image: your-registry/app-two:latest
+
+app-two-service.yaml:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-two-service
+spec:
+  selector:
+    app: app-two
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+Deploy the Microservices:
+
+Apply the deployment and service manifest files for "app-one" and "app-two" to your Kubernetes cluster:
+
+kubectl apply -f app-one-deployment.yaml
+kubectl apply -f app-one-service.yaml
+kubectl apply -f app-two-deployment.yaml
+kubectl apply -f app-two-service.yaml
+
+
+Now, let's create an Ingress resource that routes traffic to these services based on the path
+
+ingress.yaml:
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /app-one
+        pathType: Prefix
+        backend:
+          service:
+            name: app-one-service
+            port:
+              number: 80
+      - path: /app-two
+        pathType: Prefix
+        backend:
+          service:
+            name: app-two-service
+            port:
+              number: 80
+
+
+In this Ingress resource:
+
+It routes traffic with a host header of "example.com."
+Requests to "/app-one" will be directed to the "app-one-service."
+Requests to "/app-two" will be directed to the "app-two-service.
+
+Apply the Ingress manifest file to create the Ingress resource
+
+kubectl apply -f ingress.yaml
+
+
+Now, when a user accesses "example.com/app-one," traffic will be routed to the "app-one" service, and 
+accessing "example.com/app-two" will route traffic to the "app-two" service.
+
+Please note that for this setup to work, you need to configure DNS records for "example.com" 
+to point to your Kubernetes cluster's load balancer, and ensure that your Ingress controller i
+s correctly configured and running. Also, you may need to set up SSL termination if you want to secure the traffic with HTTPS.
+
+
+
+
+
+
 
 
 
