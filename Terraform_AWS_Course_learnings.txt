@@ -1,0 +1,629 @@
+Terraform Work flow:
+
+There are 5 basic commands that are present in terraform workflow They are :
+
+terraform init ---> it is used to initialize a working directory which contains terraform config files. It downloads the providers.First command that is run after writing the terraform configuration.
+
+terraform validate --->  it is used to check if the terraform configuration that we have written is syntactically correct and consistent
+
+terraform plan -->  Contains an execution plan about what resources are going to be created/edited/destroyed in the IAC .
+
+terraform apply ---> It is applied to create the desired state of the configuration .It is applied to the current directory by default.
+
+terraform destroy ---> destroys the infrastructure created by the configuration ...It will ask for approval beforre going ahead.
+
+
+Before we enforce the configuration we need to have few prerequisites ready.
+
+They are 1)A default VPC should be present 2) The AMI we are trying to configure should be available in our EC2 instance 3) Credentials should be configured 
+
+and present in ./aws/credentials folder .This we can achieve by using the aws configure command.
+
+Terraform commands details.
+
+Any file with .tf extension is a terraform configuration file. 
+
+So, we can start our work by creating a new ec2.tf folder in our windows laptop and open VS code and create a new file with the same name.
+
+Do not forget to initialinze the terraform from the root direectory by giving terraform init command where our new windows folder is created.
+
+This will initialize the background and download the requuired proivder plugins for us.
+
+
+.tf files are plain text files . Terraform files with code are called as configuration files or manifest files.
+
+All the files are present inside the terraform working directory. As said earlier, we should be present in the terrafom working directory for us to run the code.
+
+Terraform Configuration Syntax:
+
+Terraform is built on the Hashicorp language and it contains Blocks,Arguments,Identifiers and Comments.
+
+Example syntax of terraform block is as below
+
+<BLOCK TYPE> "<BLOCK LABEL>" "<BLOCK LABEL>"{
+identifier=expression (identifier =name, expression =value of an argument
+identifier=expression #argument
+}
+
+Let us take an example of AWS resource and understand this
+
+resource "aws_instance" "ec2_example"{
+ami= "<value>"
+type=t2.micro # expression 
+}
+
+In the above example it can be said the resource is the block type whereas aws_instance and ec2_example are block labels
+
+Then within  the block body we have  arguments containing identifiers and expressions as ami,type and their values respectively.
+
+Blocks can be of 2 types One is top level block as we saw above and then we have other named block inside block.
+
+Block labels 
+
+# ---> comments in Terraform for multiline comments we use /* and */ 
+
+Now lets see arguments,attributes and metarguments.
+
+Arguments --> Configure a resource ,,Depending on type of resource the number of arguments change example in aws_instance we have ami,type,key etc.. Similarly wil be different for other resource.
+
+Arguments are of 2 types required/optional.
+
+Attributes ---> Values exposed by a particular resource.. We will use attributes to expose the value to outside world.
+
+Now both arguments and attributes references can be viewed from registry.terraform page in google.
+
+Meta arguments ---> Terraform specific arguments. Arguments/Attributes are resource specific cloud information. But when coming to meta argument they are
+
+terraform specific. They are like count,foreach, depends,lifecycle  --they will change the behaviour of the resource.
+
+they are accessed in the manner resource.type.resourcename.attritbutename
+Terraform Top level blocks:
+
+We saw one of the top level block above which is resource block. Similar to that block we have many other top level blocks in terraform like.
+
+Top level block appear out of any other blocks.Most of the blocks in tf are top level block
+Some 8 common blocks are as follows.
+
+terraform settings block
+provider block
+resource block (which we saw)
+input variables
+output values
+local values
+data sources 
+modules
+
+The above block can be categorized in 3 categories.
+
+Fundamental Block (Blocks like Terraform Block/Providers Block/Resources Block come under this)
+ 
+Variable Block (Input/Output/Variable block)
+
+Calling/Reference block (Modules/Data sources block come under this)
+
+Details about Blocks:
+
+Terraform Setting block: Its a new block from 0.14. Used to configure some behaviours of our tf configuration. Things likewWhat are the required providers (cloud operators) for our infra/terraform back end info
+
+etc are present here.
+
+Terraform Providers block: heart of tf. Using this we will provision our infra. The belong to root module. There are 2 modules in tf root/child. we will see this later.
+
+Resource block: we define the resource. it has syntax and resource behaviour. 
+
+We will organize the terraform/provider block in c1-version.tf and resources in c1-resource-name.tf 
+
+Now lets see how to write each of these blocks one by one.
+
+
+Lers see the terraform block first.
+
+Terraform  block is also called as setting block/configuration block or  terraform block.
+
+
+One most important point in terraform block is it allows only CONSTANT VALUES.
+
+terraform block basic syntax looks like below
+
+terraform { # required version of terraform
+
+version=
+
+required_providers { # required terraform provider and their version
+
+aws={ ## this is a map argument hence it has an =  instead of {}
+
+}
+
+}
+
+backend { # this is the location in which we want out tfstate file to be copied after its operation. If not mentioned it gets stored local root directory.
+          # otherwise we can specify our required location which in case of aws is S3.
+
+}
+
+}
+
+Now lets write the terraform block by populating its values.
+
+terraform{
+#required_version<=1.14,=1.14,~<1.14> here <= and = are easy to understand.Where as ~<1.14 is representing a notation where the tf allows flexbility of last most version change.For example 1.15.1.16 ---1.latest is allowed but not 2.xxx
+ required_version= "<=1.6.4"
+ required_providers { block for defining the kind of provider to be downloaded
+    aws = { #map-argument 
+      source = "hashicorp/aws"  # hasicorp/aws is the source from which our AWS provider is downloaded 
+      version = "5.31.0" # it is the version of the aws_providers
+    }
+  }
+
+Now lets see provider block
+
+provider "aws" {         # just shows info about the provider we uses
+region=us-west-1         # this is the region where will deploy our infra...  we may also need secretkey and secret accesskey but that we can create in IAM and configure it using AWS configure
+}
+
+Terraform state basic:
+
+From tf cli we downloaded tf provider and we provisioned infra using terraform apply command. After this command is succesful terraform.tf state file is created  in our root directory.
+
+terraform.tfstate file hasd info about our real infrastructure. It is the underlying data base of our Infra.So, it is very critical for our environment.
+
+TF must save this file to maintain criticality of our infra. So, what ever present in this file is called as  desired state and whatever present in the cloud is called current state w.r.t 
+
+our infrastructure.
+
+So far we have seen how to create an EC2 instance.But we are yet to see have to login to the instance using key, how to use meta arguments, input variables
+
+and other aspects of the course which we will continue to see from below.
+
+Terraform Input/Output/Datasources :
+
+Input variables:
+
+Input variables are parameters that can be used to customize modules.
+
+We can pass input variables to tf in 10 different ways.
+
+Some of them are as follows
+
+We can do it by giving command terraform apply, terraform apply -r , by defining in tf.var and many other ways.
+
+But in the practical example i have created a new c2-version.tf file by including all the basic variables required in the creation of an EC2 instance.
+
+Primarily region,type and key pair. (Created key pair for windows separately in AWS console).
+
+These are description,type and default (indicating detail the variable, string and region/t3.mciro/key pair name that we created respectively).
+
+But, we have not used these variables inside our c1-version.tf file which we originally created for our AWS infrastructure.
+
+This can be achieved by using the syntax var.<variable_name> as argument in the provider section.
+
+In the above example where we created our EC2 instance , we have created EC2 resource .But we dont have any security group that describes the Ingress and Eagress rules to that particular
+
+EC2 instance.For this purpose we can create a new resource mentioning the Ingress and Egress rules of the EC2 instance.
+
+resource "aws_security_group" "vpc_ssh" {
+  name        = "vpc_ssh"
+  description = "Allow TLS inbound traffic"
+  ingress {
+    description = "vpc traffic"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
+
+With the above code we can say that our security group has been configured in terraform.
+
+But in our resource creation template we have used AMI by hard coding it. If we want the information to be directly fetched from cloud instead of hardcoding it
+
+we need to use data source block.
+
+Data sources allow us to use data from outside the terraform (Like cloud) or other terraform configurations.
+
+
+data source is defined by resource like datasource{} Data source resource supports all meta arguments like a normal resource does except the lifecycle 
+
+Example datasource block  with aws ami called as aws_ami is as follows.
+
+data "aws_ami" "example" {
+  most_recent      = true
+  owners           = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = [ami-028fe232c1d0c9146]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  
+  filter {
+    name   = "architeture"
+    values = ["x86_64"]
+  }
+}
+
+
+So,now lets focus on how to create an ec2 instance 
+
+To create ec2 instance we can conclude from the above discussion that we will need belown things 
+
+1)AMI infor ---> for this we will be using the Data source block .
+2)Instance Type ---> for this we will  be using variable Instance
+3)Security Group ---> for this we will have to get value from the security group resource.
+4)Key pair --> For this we will have to make use of variable key from variables file
+
+The code looks like the following.
+
+resource "aws_instance" "ec2_tf"{
+    ami= data.aws_ami.example.id
+    instance_type= var.instance_type
+    vpc_security_group_id= [aws_security_group.vpc_ssh.id]
+    key_name= var.instance_keypair
+    tags ={
+        "NAME"= "instance_consodilated"
+    }
+}
+
+Please note that the information in the above .tf file is actually scattered among different files like data source,variableb and resource files
+
+Accessing the data in each of the above files requires us to access it in a specific syntactical manner
+
+Accessing ami requires us to do it like data.datasourcename.id,accessing instance type is done by var.<variable_name>,accessing resource is done by rseourcename.localnameofresource.argument
+
+Output Values:
+
+Output values are like return of terraform module. A root module uses output to print values to CLI after terraform apply
+
+Other uses are with child modules to expose a part of its attributes to parent module and also in remote state root modules outputs can be accessed by other configuration.
+
+Lets create output.tf file and get values from ec2 instance.
+
+We can get public IP and Public DNS values of our concerned EC2 instance and obtain output values
+
+List,Map and Count argument in Terraform:
+
+We have provision in tf where the variables can be passed in a group.These are of the types Lists/Maps.
+
+Lists ---> these are denoted by the symbol []
+Maps --> these are denoted by the symbol {}
+
+List are odered collection of variables. Maps are also ordered but they are key-value pairs
+
+A list variable is accessed inside the resource file of the tf config by using the syntax var.list_variable_name[index] of the element
+
+Similarly a map variable is accessed inside the resource file using the syntax var.map_variable_name.["key"] .
+
+Along with list and map, we also need to learn about the meta argument "Count"
+
+Count is used to recreate as many number of resources as we possibly can by assigining it the value. For example count=2 inside an EC2 resource
+
+file can create 2 EC2 instances at a single go.This will help in avoiding duplication of code
+
+Count variable has indexes 0 and 1. We can refer the resources created by the count variable using the count["index"] syntax.
+
+Interpolation symbol ---> ${} is the interpolation symbol. This is used to  validate values of the variables.
+
+For loop with list,map advanced mapand splat operators  in Output block:
+
+For loops are used to repeat particular task in our configurations
+
+Please note that for loops are used as part of an "output" block with various data types like list,map and advanced map
+
+The snytax of for loop looking to fetch the publi ip addresses of the ec2 instances created using the "count" variable are as follows
+
+For loop-List:
+
+The below for loop generates a list of public dns values 
+
+output "for_loop_list{
+
+description="for loop with list example"
+value=[for <variable> in resource.resourcelocalname:attribute(like public_dns)]
+}
+
+
+For loop-Map:
+
+This is also a for loop which generates a map of public dns values..map is a key value pair..so, just as in case of a list it also generates
+
+a group of public dns but with key values.Key values can be any resource realted attribute. They relation between key and value is expressed using => symbol
+
+output "for_loop_list{
+
+description="for loop with list example"
+value={for <variable> in resource.resourcelocalname:key(variable.id)=>attribute(like public_dns)]
+}
+
+For loop advanced map:
+
+output "for_loop_advanced_map"{
+
+description="advanced map example"
+value={for c,<variable> in resource.resourcename:key (in this case c) =>attribute}
+}
+
+Splat operator:
+
+A splat operator does work with resources like count which create multiple servers. Just in case of for loop which is used to iterate through the
+number of instances being created a splat operator also is used for the same.But, it is used with out the for loop and its syntax is to use[*] between
+resource local name and the attribute we are trying to access.
+
+output "splat_operator"{
+
+description="example of splat operator"{
+value=resource.localname[*].public_dns}
+
+For-each Meta argument:
+
+Consider a scenario where we need to create an EC2 resoource in each of the availability zones of our AWS region.
+
+For this we need to make use of the data source called aws_availability_zones and a special meta argument called for each.
+
+So before we create ec2 instance we need to get a list of all availability zones and for this data soiurce aws_availability_zones gives us the list.
+
+that data source is as follows. Please put this content inside the resource.tf file
+
+data "aws_availability_zones" "az_example" {
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
+But just as in case of count which creates multiple instances of same resources,we will need something which takes input of various strings at each iteration and create resource using that input.
+
+This is a primary example of creating a resource in each of the availability zones.
+
+
+for this we use for_each.
+
+for_each takes input as a set of strings or map. 
+
+From the above data source we get list of available zones using the syntax aws_availability_zones."loacl name".zones.
+
+But since for_each only accepts map and set of strings , we use another function toset and apply it to the above syntax like toset(aws_availability_zones."loacl name".zones)
+
+for_each=toset(data.aws_availability_zones.az_example.names)
+
+Please note thst for_each accepts list of strings or map, the values it returns can be accessed using each.key,each.value variables.
+
+In the case of set of strings each.key=each.value whereas in case of map each.key is diffeerent to each.value.
+
+Now,we can write the resource file as below.
+
+data "aws_availability_zones" "az_example" {
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
+resource "aws_instance" "ec2_tf"{
+    ami= data.aws_ami.example.id
+    #instance_type= var.instance_type_list[1]
+    vpc_security_group_ids= [aws_security_group.vpc_ssh.id]
+    key_name= var.instance_keypair
+    instance_type=var.instance_type_map["prod"]
+    #count=2
+    for_each=toset(data.aws_availability_zones.az_example.names)
+    availability_zone=each.key
+    tags ={
+        #"name1"="index of the count ${count.index}"
+        "Name"="for-each-demo${each.value}"
+    }
+}
+
+With the above configuration in place when we try to do a terraform validate and apply and try to see the output (public_ip or public_dns ) values
+
+we will observe that in the ourputs.tf file the splat operator is not supported to fetch the attribute values.
+
+This is due to the fact that we have used for_each to create our resources which only accepts set of strings or map .But splat operator returns list.
+
+So,to solve this issue we need to update the outputs.tf file accordingly.This is done as below.
+
+this is also achieved by putting for loop in the outputs file like below
+
+Please note that for loop creates a list which is again not accepted by for_each so we need to convert it to either set or map using toset() or tomap() functions.
+
+output "public_ip{
+description=""
+value=toset([for instance in aws_instance.ec2.tf:instance.public_ip])
+}
+
+similarly we can do it for public_dns also but this time we can use tomap() function instead of toset() function.
+
+output "public_dns{
+description=""
+value=tomap({for instance in aws_instance.ec2.tf:instance.public_ip})
+}
+
+This will create the total no of resources equal to the total no of az (one in each az).
+
+But, there can be cases where a particular AZ may not be having the required type of the instance (like t3.micro) which we are requesting.
+
+Then to solve this issue we need to do the following.
+
+
+If in one az one particular type of instance is unavailable we need to exclude that 
+
+To find out in which az the instance is unavailable, we must first get the list of instances available inside an availability zone using a special
+
+data source called aws_ec2_instance_type offerings
+
+First we check for only one single az by filtering it in the respective data source block
+
+
+aws_ec2_instance_type_offerings
+
+
+data "aws_instance_type_offerings" "ec2-types"{
+
+ filter{
+  name="type"
+  type=[t3.micro]
+  }
+ filter{
+  name="location"
+  type=[us-eat-1]
+  }
+  location_type=availabilityzone
+ output "value"{
+  ans=aws.instance.type.offerings.ec2-types.names
+
+Using this type of code can fetch us output which can give info about a type of ec2 instance is present in a particular az or not.
+
+To create a VPC using the AWS console we follow the below steps
+
+1)We create the VPC inside a specific availability zone of a region.We give an IP addess of a specific range as needed.
+
+2) We create a public subnet and private subnet within the available VPC.
+
+3) We create an IGW inside thew VPC and then we create a NGW (Nat gateway) inside the public subnet.
+
+4) We then create public route route table associate routes to it (0.0.0.0/0) and associate a public subnet to it.Make sure IGW is also attached to it
+
+5) We then create a private route table create a private route 0.0.0.0/0 and associate it to a NAT gateway.
+
+
+We make use of the above knowledge and create a VPC using the terraform modules concept
+
+Modules in terraform:
+
+Modules in tf are a collection of .tf files which define a set of resources and their configurations.
+
+Modules are define using the keyword "module" in our terraform configuration file.
+
+Every terraform configuration has a root module. All the .tf files carrying the resource creation info are part of that root module.
+
+This way of creating the modules help in reusing and sharing of the code to multiple users.
+
+Modules can be classified as Parent (root) and child modules. Child module is part of the same directory as root module but it is inside a separate
+
+directory of its own. The terraform files and resources it creates can be consumed by the parent module .
+
+We will see all the above described concepts in a more practical manner below.
+
+Please note that as in the case of providers even modules are present in the terraform registry for usage and we need to be diligent in using the 
+
+right module for our usage purpose.
+
+So lets create VPC Using Terraform modules.
+
+So, for this purpose we write 3 files namely versions.tf,variables.tf and vpc.tf .In the file vpc.tf we we will create the modules.
+
+so in the version.tf we write the following
+
+terraform{
+required_version = "= 1.6.4"
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.31.0"
+    }
+  }
+}
+
+provider "aws"{
+    region= var.aws_region
+}
+
+In version.tf we generally include terraform block and provider block
+
+Also, in the generic variable.tf we write the following code.
+
+
+variable "aws_region"{
+    default="us-west-1"
+    description="region where our aws resources will be created"
+}
+
+
+Now, to make sure the availaibility zone of our AWS account is taken dynamically, we make use of the module aws_availability_zones module in the following manner
+
+data "aws_availability_zones" "example" {
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
+This will try to create resources only in the available zones where our requred resources are present.
+
+This we have to setup inside the vpc module file. Also, we have to make sure that we are commenting the already existing content related to availability zones 
+
+in our terraform module inside the terraform variables section.So, both these thing have to be taken care of before proceeding ahead.
+
+Please note that design of the VPC module that we are trying to work on has a bastion server, 2 subnets (public and private) inside which we have our
+
+EC2 instances So,now whenever our EC2 instances have to be accessed by our terraform we do it via bastion host. This will require copying the keys of our 
+
+EC2 instance in to our bastion host as we will use the key pair login technique and the bastion host would need AWS account key in its machine to access the EC2 account.
+
+Key inside the bastion host is obtained by copying it from our Terraform working machine after downloading from the AWS account.
+
+I have copied that and kept the name as eks_tarraform_key
+ 
+then we need to write the code as following.
+
+resource "aws_instance" "bastion" {
+  ami           = "ami-12345678"  # Specify your desired AMI ID
+  instance_type = "t2.micro"
+  key_name      = "existing-keypair-name"  # Use the name of your existing key pair
+
+  tags = {
+    Name = "bastion-host"
+  }
+
+  provisioner "file" {
+    source      = "~/.ssh/id_rsa.pub"  # Path to your local public key
+    destination = "/home/ec2-user/.ssh/authorized_keys"  # Path on the bastion host server
+
+    connection {
+      type = "ssh"
+      user = "ec2-user"
+      host = self.public_ip  # Use the public IP of the instance
+    }
+  }
+}
+
+output "bastion_public_ip" {
+  value = aws_instance.bastion.public_ip
+}
+
+ 
+ 
+Terraform provisioners:
+
+In terraform provisioner useful in performing tasks on a resource 
+
+For example a file provisioner is used to copy the files from local machine into a remote machine (like a bastion host)
+
+remote exec provisioner is used to run scripts on a remote machine after the resource is created.
+
+Local exec -- Similar to a remote exec as this also can be used to run scripts..But in this case it is done withn the local machine but not the remote.
+
+Null Resource ---> A null resource in terraform is a resource which is not directlyt created  or managed as infrasturcture but can be used as a place holder for 
+
+various tasks like running remote provisioners,managing dependencies between the resources and introduicng time delays.
